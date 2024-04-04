@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CurlyBananasMessenger</string>
+    <string name="tv_contacts">My contacts</string>
+    <string name="et_search">Search contacts...</string>
 </resources>
