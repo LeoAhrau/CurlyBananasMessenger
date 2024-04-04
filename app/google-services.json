@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "393912575828",
-    "project_id": "au23-c4365",
-    "storage_bucket": "au23-c4365.appspot.com"
+    "project_number": "956098049590",
+    "project_id": "au23messenger",
+    "storage_bucket": "au23messenger.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:393912575828:android:7e908f3a645e2d713f8ac1",
+        "mobilesdk_app_id": "1:956098049590:android:3ba21923577b87ec8b0a97",
         "android_client_info": {
           "package_name": "com.example.curlybananasmessenger"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDXK6p4zbnC64xtQwWIDB7KaQ2yOCidRJY"
+          "current_key": "AIzaSyCAiSp0WQIB5hxzef5ZgmwTAd4nBdNJAg4"
         }
       ],
       "services": {
