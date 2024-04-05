@@ -12,12 +12,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Testing
+        // ------------------- Testing---------------------
         val fragment = supportFragmentManager.beginTransaction()
 
         fragment.replace(binding.frameContainerTest.id, ChatInterfaceFragment())
         fragment.addToBackStack(null)
         fragment.commit()
+        // ------------------- Testing---------------------
 
 
     }
