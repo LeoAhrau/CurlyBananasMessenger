@@ -34,7 +34,7 @@ class ChatInterfaceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Testing
+        //------------- Testing --------------------
         messageField = binding.etChatMessage
         sendButton = binding.btnSendMessage
         chatList = binding.lvChat
@@ -51,6 +51,6 @@ class ChatInterfaceFragment : Fragment() {
             }
 
         }
-
+        //------------- Testing --------------------
     }
 }
