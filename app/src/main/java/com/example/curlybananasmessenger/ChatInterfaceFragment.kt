@@ -1,7 +1,6 @@
 package com.example.curlybananasmessenger
 
 import android.os.Bundle
-import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,15 +16,15 @@ class ChatInterfaceFragment : Fragment() {
     private lateinit var messageField: EditText
     private lateinit var sendButton: Button
     private lateinit var chatList: ListView
-    private lateinit var adapter: ArrayAdapter<String>
-    private val itemList = ArrayList<String>()
+    private lateinit var adapter: CustomChatAdapter
+
+    private val chatItemList = ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
 
     ): View? {
-
         binding = FragmentChatInterfaceBinding.inflate(layoutInflater)
         return binding.root
 
@@ -39,17 +38,16 @@ class ChatInterfaceFragment : Fragment() {
         sendButton = binding.btnSendMessage
         chatList = binding.lvChat
 
-        adapter = ArrayAdapter(this.requireContext(), android.R.layout.simple_list_item_1, itemList)
+        adapter = CustomChatAdapter(requireContext(), chatItemList)
         chatList.adapter = adapter
 
         sendButton.setOnClickListener {
             val chatMessage = messageField.text.toString()
             if (chatMessage.isNotEmpty()) {
-                itemList.add(chatMessage)
-                adapter.notifyDataSetChanged() // Change this.
+                chatItemList.add(chatMessage)
+                adapter.updateText(chatItemList)
                 messageField.text.clear()
             }
-
         }
         //------------- Testing --------------------
     }
