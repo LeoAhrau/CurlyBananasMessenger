@@ -4,26 +4,34 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 
-class CustomChatAdapter(context: Context, private var chatList: List<String>) :
-    ArrayAdapter<String>(context, R.layout.chat_item_container, chatList) {
+class CustomChatAdapter(private val context: Context, private var chatList: MutableList<String>) :
+    RecyclerView.Adapter<CustomChatAdapter.ChatMessageHolder>() {
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var chatItemView = convertView
-        if (chatItemView == null) {
+        override fun onCreateViewHolder(parent: ViewGroup, viewChatLayout: Int): ChatMessageHolder {
             val inflater = LayoutInflater.from(context)
-            chatItemView = inflater.inflate(R.layout.chat_item_container, parent, false)
+            val view = inflater.inflate(
+                if (viewChatLayout % 2 == 0) R.layout.sender_item_container else R.layout.receiver_item_container,
+                parent, false
+            )
+            return ChatMessageHolder(view)
         }
-        val textView = chatItemView!!.findViewById<TextView>(R.id.tv_chat_container)
-        textView.text = chatList[position]
+        override fun onBindViewHolder(holder: ChatMessageHolder, position: Int) {
+            val chatMessageText = chatList[position]
+            holder.chatTextTextView.text = chatMessageText
+        }
 
-        return chatItemView
-    }
+        override fun getItemCount(): Int {
+            return chatList.size
+        }
 
-    fun updateText(newText: List<String>) {
-        chatList = newText
-        notifyDataSetChanged()
-    }
+        override fun getItemViewType(position: Int): Int {
+            return position
+        }
+
+        inner class ChatMessageHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val chatTextTextView: TextView = itemView.findViewById(R.id.tv_chat_container)
+        }
 }

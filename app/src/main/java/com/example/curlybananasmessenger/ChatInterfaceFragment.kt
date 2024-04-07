@@ -7,26 +7,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ListView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.curlybananasmessenger.databinding.FragmentChatInterfaceBinding
 
 class ChatInterfaceFragment : Fragment() {
     private lateinit var binding: FragmentChatInterfaceBinding
     private lateinit var messageField: EditText
     private lateinit var sendButton: Button
-    private lateinit var chatList: ListView
+    private lateinit var chatList: RecyclerView
     private lateinit var adapter: CustomChatAdapter
 
-    private val chatItemList = ArrayList<String>()
+    private val chatItemList = mutableListOf<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
 
-    ): View? {
+    ): View {
         binding = FragmentChatInterfaceBinding.inflate(layoutInflater)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,16 +35,18 @@ class ChatInterfaceFragment : Fragment() {
         //------------- Testing --------------------
         messageField = binding.etChatMessage
         sendButton = binding.btnSendMessage
-        chatList = binding.lvChat
+        chatList = binding.rvChat
 
         adapter = CustomChatAdapter(requireContext(), chatItemList)
         chatList.adapter = adapter
+        chatList.layoutManager = LinearLayoutManager(requireContext())
 
         sendButton.setOnClickListener {
-            val chatMessage = messageField.text.toString()
-            if (chatMessage.isNotEmpty()) {
-                chatItemList.add(chatMessage)
-                adapter.updateText(chatItemList)
+            val messageText = messageField.text.toString()
+            if (messageText.isNotEmpty()) {
+                chatItemList.add(messageText)
+                adapter.notifyItemInserted(chatItemList.size - 1)
+                //chatList.smoothScrollToPosition(chatItemList.size - 1)
                 messageField.text.clear()
             }
         }
