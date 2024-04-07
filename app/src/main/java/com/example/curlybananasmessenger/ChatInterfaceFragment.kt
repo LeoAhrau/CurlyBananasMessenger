@@ -16,7 +16,7 @@ class ChatInterfaceFragment : Fragment() {
     private lateinit var messageField: EditText
     private lateinit var sendButton: Button
     private lateinit var chatList: RecyclerView
-    private lateinit var adapter: CustomChatAdapter
+    private lateinit var adapter: CustomChatMessageAdapter
 
     private val chatItemList = mutableListOf<String>()
 
@@ -37,7 +37,7 @@ class ChatInterfaceFragment : Fragment() {
         sendButton = binding.btnSendMessage
         chatList = binding.rvChat
 
-        adapter = CustomChatAdapter(requireContext(), chatItemList)
+        adapter = CustomChatMessageAdapter(requireContext(), chatItemList)
         chatList.adapter = adapter
         chatList.layoutManager = LinearLayoutManager(requireContext())
 
