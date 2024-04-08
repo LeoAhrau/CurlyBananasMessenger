@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         // ------------------- Testing---------------------
         val fragment = supportFragmentManager.beginTransaction()
 
@@ -25,3 +26,4 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
+
