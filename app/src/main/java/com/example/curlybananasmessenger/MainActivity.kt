@@ -1,5 +1,6 @@
 package com.example.curlybananasmessenger
 
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.curlybananasmessenger.databinding.ActivityMainBinding
@@ -22,4 +23,5 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
 }
