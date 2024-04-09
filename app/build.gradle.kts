@@ -52,7 +52,8 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.3.6")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")//kapt
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")//kapt
     kapt("androidx.room:room-compiler:2.6.1") // Room database
     // För Kotlin-projekt använd kapt istället för annotationProcessor
     //annotationProcessor("androidx.room:room-compiler:2.6.1")

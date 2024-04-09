@@ -7,5 +7,6 @@
     <string name="text_in_chat_container">Testing a message here to display the content of it...</string>
     <string name="tv_contacts">My contacts</string>
     <string name="et_search">Search contacts...</string>
-    <string name="et_new_contact">Write a new contact</string>
+    <string name="et_contact_id">Write contact id</string>
+    <string name="et_contact_name">Write contact name</string>
 </resources>
