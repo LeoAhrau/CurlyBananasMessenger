@@ -1,6 +1,49 @@
 package com.example.curlybananasmessenger
 
+//import android.util.Log
+//import com.google.firebase.auth.FirebaseAuth
+//import com.google.firebase.firestore.FirebaseFirestore
+//
+//class ContactDao {
+//
+//    private val firestoreDB = FirebaseFirestore.getInstance()
+//    private val currentUser = FirebaseAuth.getInstance().currentUser
+//
+//    fun addContact(contact: Contact) {
+//        currentUser?.uid?.let { userId ->
+//            val contactsCollection = firestoreDB.collection("users").document(userId)
+//                .collection("contacts")
+//
+//            contactsCollection.document(contact.contactId ?: "")
+//                .set(contact)
+//                .addOnSuccessListener {
+//                    Log.i("SUCCESS", "Added contact with ID ${contact.contactId} to Firestore")
+//                }
+//                .addOnFailureListener { e ->
+//                    Log.e("FAILURE", "Failed to add contact to Firestore: ${e.message}")
+//                }
+//        }
+//    }
+//
+//    fun deleteContact(selectedContact: Contact) {
+//        currentUser?.uid?.let { userId ->
+//            val contactDocument = firestoreDB.collection("users").document(userId)
+//                .collection("contacts").document(selectedContact.contactId ?: "")
+//
+//            contactDocument.delete()
+//                .addOnSuccessListener {
+//                    Log.i("SUCCESS", "Contact deleted from Firestore")
+//                }
+//                .addOnFailureListener { e ->
+//                    Log.e("FAILURE", "Failed to delete contact from Firestore: ${e.message}")
+//                }
+//        }
+//    }
+//}
+
+
 import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class ContactDao {
@@ -8,11 +51,11 @@ class ContactDao {
     val KEY_CONTACT_NAME = "contact_name"
     val KEY_CONTACT_EMAIL = "contact_email"
 
-
+    private val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
     constructor (activity: ContactActivity) {
         FirebaseFirestore
             .getInstance()
-            .collection("users/contacts")
+            .collection("users/$currentUserUid/contacts")
             .addSnapshotListener(activity) { value, error ->
                 if (error != null) {
                     Log.e("ERROR", "Failed to listen")
@@ -43,7 +86,7 @@ class ContactDao {
 
         FirebaseFirestore
             .getInstance()
-            .document("users/contacts/${contact.contactId}")
+            .document("users/$currentUserUid/contacts/${contact.contactId}")
             .set(dataToStore)
             .addOnSuccessListener {
                 Log.i(
@@ -79,7 +122,7 @@ class ContactDao {
     fun deleteContact(selectedContact : Contact){
         FirebaseFirestore
             .getInstance()
-            .document("users/contacts/${selectedContact.contactId}")
+            .document("users/$currentUserUid/contacts/${selectedContact.contactId}")
             .delete()
             .addOnSuccessListener { Log.i("SUCCESS", "Contact deleted from FireSrore") }
             .addOnFailureListener { Log.e("Failure", "Failed to delete contact") }
