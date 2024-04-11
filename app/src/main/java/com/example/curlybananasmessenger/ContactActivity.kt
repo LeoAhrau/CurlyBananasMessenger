@@ -54,5 +54,4 @@ class ContactActivity : AppCompatActivity() {
         val arrayAdapter = ArrayAdapter(this, R.layout.simple_list_item_1, contactList)
         binding.lvContacts.adapter = arrayAdapter
     }
-
 }
