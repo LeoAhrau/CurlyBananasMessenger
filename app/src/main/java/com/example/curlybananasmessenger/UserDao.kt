@@ -44,4 +44,11 @@ class UserDao {
                 Log.e("FAILURE", "Failed to register user: ${e.message}")
             }
     }
+ 
 }
+
+
+
+}
+
+
