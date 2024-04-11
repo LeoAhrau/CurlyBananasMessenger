@@ -56,10 +56,4 @@ class ContactActivity : AppCompatActivity() {
         binding.lvContacts.adapter = arrayAdapter
     }
 
-//    fun showContacts(contactList: ArrayList<Contact>) {
-//        val contactsNamesAndEmails = contactList.map { "Contact Name: ${it.contactName}, " +
-//                "Contact Email: ${it.contactEmail}" }
-//        val arrayAdapter = ArrayAdapter(this, R.layout.simple_list_item_1, contactsNamesAndEmails)
-//        binding.lvContacts.adapter = arrayAdapter
-//    }
 }
