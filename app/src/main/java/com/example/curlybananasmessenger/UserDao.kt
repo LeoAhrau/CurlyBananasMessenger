@@ -28,28 +28,27 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class UserDao {
 
-    val KEY_ID = "id"
-    val KEY_Nickname = "nickname"
-    val KEY_USERNAME = "username"
-    val KEY_PASSWORD = "password"
+    private val firestoreDB = FirebaseFirestore.getInstance()
+    private val usersCollection = firestoreDB.collection("users")
 
-    fun registerUser(user: User){
+    fun registerUser(user: User) {
         val userDetails = HashMap<String, Any>()
+        userDetails["id"] = user.id ?: ""
+        userDetails["nickname"] = user.nickname ?: ""
+        userDetails["username"] = user.username ?: ""
+        userDetails["password"] = user.password ?: ""
 
-        userDetails[KEY_ID] = user.id as Any
-        userDetails[KEY_Nickname] = user.nickname as Any
-        userDetails[KEY_USERNAME] = user.username as Any
-        userDetails[KEY_PASSWORD] = user.password as Any
-
-        FirebaseFirestore
-            .getInstance()
-            .document("users/${user.id}")
-            .set(userDetails)
+        usersCollection.document(user.id ?: "").set(userDetails)
             .addOnSuccessListener { Log.i("SUCCESS", "Successfully registered user") }
-            .addOnFailureListener { Log.e("FAILURE", "Failed to register user") }
-
+            .addOnFailureListener { e ->
+                Log.e("FAILURE", "Failed to register user: ${e.message}")
+            }
     }
+ 
+}
+
 
 
 }
+
 
