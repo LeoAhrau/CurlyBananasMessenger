@@ -67,4 +67,3 @@ class RegisterActivity : AppCompatActivity(){
             Log.e("FAILURE", e.message.toString())
         }
     }
-}
