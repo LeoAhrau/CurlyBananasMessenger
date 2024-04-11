@@ -12,7 +12,6 @@ import java.util.UUID
 class ContactActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityContactBinding
-
     var contactDao = ContactDao(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
