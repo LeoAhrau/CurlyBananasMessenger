@@ -7,15 +7,11 @@ import android.util.Log
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.example.curlybananasmessenger.databinding.ActivityContactBinding
-import com.example.curlybananasmessenger.databinding.ActivityMainBinding
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import java.util.UUID
 
 class ContactActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityContactBinding
-//    lateinit var firebaseDB: FirebaseDatabase
 
     var contactDao = ContactDao(this)
 
@@ -29,6 +25,7 @@ class ContactActivity : AppCompatActivity() {
             addContact()
         }
 
+
         binding.lvContacts.onItemLongClickListener =
             AdapterView.OnItemLongClickListener { parent, view, position, id ->
                 val selectedContact = parent.getItemAtPosition(position) as Contact
@@ -39,13 +36,15 @@ class ContactActivity : AppCompatActivity() {
 
     private fun addContact() {
         try {
-//            firebaseDB = FirebaseDatabase.getInstance()
 
-            val contactName = binding.etContactName.toString()
-            val contactEmail = binding.etContactEmail.toString()
+            val contactName = binding.etContactName.text.toString()
+            val contactEmail = binding.etContactEmail.text.toString()
 
             val contact = Contact(UUID.randomUUID().toString(), contactName, contactEmail)
             contactDao.addContact(contact)
+
+            binding.etContactName.text.clear()
+            binding.etContactEmail.text.clear()
 
         } catch (e: Exception) {
             Log.e("ERROR", e.message.toString())
@@ -56,4 +55,11 @@ class ContactActivity : AppCompatActivity() {
         val arrayAdapter = ArrayAdapter(this, R.layout.simple_list_item_1, contactList)
         binding.lvContacts.adapter = arrayAdapter
     }
+
+//    fun showContacts(contactList: ArrayList<Contact>) {
+//        val contactsNamesAndEmails = contactList.map { "Contact Name: ${it.contactName}, " +
+//                "Contact Email: ${it.contactEmail}" }
+//        val arrayAdapter = ArrayAdapter(this, R.layout.simple_list_item_1, contactsNamesAndEmails)
+//        binding.lvContacts.adapter = arrayAdapter
+//    }
 }

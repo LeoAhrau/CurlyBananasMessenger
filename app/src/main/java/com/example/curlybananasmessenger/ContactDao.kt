@@ -1,47 +1,5 @@
 package com.example.curlybananasmessenger
 
-//import android.util.Log
-//import com.google.firebase.auth.FirebaseAuth
-//import com.google.firebase.firestore.FirebaseFirestore
-//
-//class ContactDao {
-//
-//    private val firestoreDB = FirebaseFirestore.getInstance()
-//    private val currentUser = FirebaseAuth.getInstance().currentUser
-//
-//    fun addContact(contact: Contact) {
-//        currentUser?.uid?.let { userId ->
-//            val contactsCollection = firestoreDB.collection("users").document(userId)
-//                .collection("contacts")
-//
-//            contactsCollection.document(contact.contactId ?: "")
-//                .set(contact)
-//                .addOnSuccessListener {
-//                    Log.i("SUCCESS", "Added contact with ID ${contact.contactId} to Firestore")
-//                }
-//                .addOnFailureListener { e ->
-//                    Log.e("FAILURE", "Failed to add contact to Firestore: ${e.message}")
-//                }
-//        }
-//    }
-//
-//    fun deleteContact(selectedContact: Contact) {
-//        currentUser?.uid?.let { userId ->
-//            val contactDocument = firestoreDB.collection("users").document(userId)
-//                .collection("contacts").document(selectedContact.contactId ?: "")
-//
-//            contactDocument.delete()
-//                .addOnSuccessListener {
-//                    Log.i("SUCCESS", "Contact deleted from Firestore")
-//                }
-//                .addOnFailureListener { e ->
-//                    Log.e("FAILURE", "Failed to delete contact from Firestore: ${e.message}")
-//                }
-//        }
-//    }
-//}
-
-
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
