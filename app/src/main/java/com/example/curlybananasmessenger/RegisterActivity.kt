@@ -11,13 +11,12 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.flow.emptyFlow
 import java.util.UUID
 
-class RegisterActivity : AppCompatActivity(){
+class RegisterActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityRegisterBinding
     lateinit var firebaseAuth: FirebaseAuth
     lateinit var firebaseDB: FirebaseDatabase
     val userDao = UserDao()
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,3 +66,4 @@ class RegisterActivity : AppCompatActivity(){
             Log.e("FAILURE", e.message.toString())
         }
     }
+}
