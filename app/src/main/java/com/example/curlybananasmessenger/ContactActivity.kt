@@ -31,7 +31,7 @@ class ContactActivity : AppCompatActivity() {
             AdapterView.OnItemLongClickListener { parent, view, position, id ->
                 val selectedContact = parent.getItemAtPosition(position) as Contact
                 val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("contactName", selectedContact)
+                intent.putExtra("contactId", selectedContact)
                 startActivity(intent)
                 finish()
                 true

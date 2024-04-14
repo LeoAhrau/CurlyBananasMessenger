@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.curlybananasmessenger.databinding.FragmentChatInterfaceBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class ChatInterfaceFragment : Fragment() {
     private lateinit var binding: FragmentChatInterfaceBinding
@@ -21,7 +22,7 @@ class ChatInterfaceFragment : Fragment() {
     private lateinit var adapter: CustomChatMessageAdapter
     private lateinit var contactName: TextView
 
-    private val chatItemList = mutableListOf<String>()
+    private val chatItemList = mutableListOf<ChatMessage>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,24 +37,17 @@ class ChatInterfaceFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         try {
-            val contactName = arguments?.getString("contactName")
-            binding.contactName.text = contactName
+            val contactName = arguments?.getString("contactId")
+            binding.tvContactName.text = contactName
 
             Log.i("Success", "Successfully changed textview name")
         } catch (e: Exception) {
             Log.e("Error", "Failed to change name", e)
         }
 
-        binding.contactName.text = "Hello"
-
-
-        //-------------------- Testing --------------------
         messageField = binding.etChatMessage
         sendButton = binding.btnSendMessage
         chatList = binding.rvChat
-
-
-
 
         adapter = CustomChatMessageAdapter(requireContext(), chatItemList)
         chatList.adapter = adapter
@@ -62,14 +56,11 @@ class ChatInterfaceFragment : Fragment() {
         sendButton.setOnClickListener {
             val messageText = messageField.text.toString()
             if (messageText.isNotEmpty()) {
-                chatItemList.add(messageText)
+                val chatMessage = ChatMessage(messageText, FirebaseAuth.getInstance().currentUser?.uid)
+                chatItemList.add(chatMessage)
                 adapter.notifyItemInserted(chatItemList.size - 1)
-                //chatList.smoothScrollToPosition(chatItemList.size - 1)
                 messageField.text.clear()
-
-
             }
         }
-        //-------------------- Testing --------------------
     }
 }
