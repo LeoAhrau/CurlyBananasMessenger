@@ -11,7 +11,7 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.flow.emptyFlow
 import java.util.UUID
 
-class RegisterActivity : AppCompatActivity(){
+class RegisterActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityRegisterBinding
     lateinit var firebaseAuth: FirebaseAuth
@@ -53,9 +53,11 @@ class RegisterActivity : AppCompatActivity(){
                             val userUid = user.uid
                             val user = User(userUid, nickname, username, password)
                             userDao.registerUser(user)
-                            Toast.makeText(this, "Successfully registered", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Successfully registered", Toast.LENGTH_SHORT)
+                                .show()
                         } else {
-                            Toast.makeText(this, "User registration failed", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "User registration failed", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                     .addOnFailureListener { e ->
@@ -67,3 +69,4 @@ class RegisterActivity : AppCompatActivity(){
             Log.e("FAILURE", e.message.toString())
         }
     }
+}
