@@ -56,26 +56,6 @@ class ContactDao {
 
     }
 
-//    fun fetchContacts(activity: ContactActivity) {
-//        val contactsList = ArrayList<Contact>()
-//
-//        FirebaseFirestore
-//            .getInstance()
-//            .collection("users/contacts")
-//            .get()
-//            .addOnSuccessListener { result ->
-//                for (document in result) {
-//                    val contact_id = document.getString(KEY_CONTACT_ID)
-//                    val contact_name = document.getString(KEY_CONTACT_NAME)
-//                    val contact_email = document.getString(KEY_CONTACT_EMAIL)
-//
-//                    val contact = Contact(contact_id, contact_name, contact_email)
-//                    contactsList.add(contact)
-//                }
-//                Log.i("SUCCESS", "Successfully fetched all contacts")
-//                activity.showContacts(contactsList)
-//            }
-//    }
 
     fun deleteContact(selectedContact : Contact){
         FirebaseFirestore
