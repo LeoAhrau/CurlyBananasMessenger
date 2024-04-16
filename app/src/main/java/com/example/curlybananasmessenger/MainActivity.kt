@@ -16,17 +16,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-
-
-
-
-        // Starta ChatActivity direkt
-        //val intent = Intent(this, ChatActivity::class.java)
-        //        startActivity(intent)
-
-        // Avsluta MainActivity så att den inte är aktiv i backstack
-        //finish()
-
         // ------------------- Testing---------------------
         val contactName = intent.getStringExtra("contactName")
 
