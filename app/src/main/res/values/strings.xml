@@ -9,4 +9,6 @@
     <string name="et_search">Search contacts...</string>
     <string name="et_contact_id">Write contact id</string>
     <string name="et_contact_name">Write contact name</string>
+    <string name="navigation_drawer_close">Close</string>
+    <string name="navigation_drawer_open">Open</string>
 </resources>
