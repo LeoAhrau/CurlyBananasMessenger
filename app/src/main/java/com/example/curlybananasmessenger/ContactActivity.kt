@@ -1,12 +1,14 @@
 package com.example.curlybananasmessenger
 
 import android.R
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.example.curlybananasmessenger.databinding.ActivityContactBinding
+import com.google.firebase.auth.FirebaseAuth
 import java.util.UUID
 
 class ContactActivity : AppCompatActivity() {
@@ -32,9 +34,19 @@ class ContactActivity : AppCompatActivity() {
         binding.lvContacts.onItemLongClickListener =
             AdapterView.OnItemLongClickListener { parent, view, position, id ->
                 val selectedContact = parent.getItemAtPosition(position) as Contact
-                contactDao.deleteContact(selectedContact)
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("contactName", selectedContact)
+                startActivity(intent)
+                finish()
                 true
             }
+
+        //binding.lvContacts.onItemLongClickListener =
+        //            AdapterView.OnItemLongClickListener { parent, view, position, id ->
+        //                val selectedContact = parent.getItemAtPosition(position) as Contact
+        //                contactDao.deleteContact(selectedContact)
+        //                true
+        //            }
     }
 
     private fun addContact() {

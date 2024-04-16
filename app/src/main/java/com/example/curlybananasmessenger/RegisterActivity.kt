@@ -19,7 +19,6 @@ class RegisterActivity : AppCompatActivity() {
     val userDao = UserDao()
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
