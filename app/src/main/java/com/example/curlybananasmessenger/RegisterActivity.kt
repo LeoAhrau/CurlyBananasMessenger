@@ -52,9 +52,11 @@ class RegisterActivity : AppCompatActivity() {
                             val userUid = user.uid
                             val user = User(userUid, nickname, username, password)
                             userDao.registerUser(user)
-                            Toast.makeText(this, "Successfully registered", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Successfully registered", Toast.LENGTH_SHORT)
+                                .show()
                         } else {
-                            Toast.makeText(this, "User registration failed", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "User registration failed", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                     .addOnFailureListener { e ->

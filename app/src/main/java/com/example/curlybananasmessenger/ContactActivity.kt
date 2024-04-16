@@ -14,18 +14,22 @@ import java.util.UUID
 class ContactActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityContactBinding
-    var contactDao = ContactDao(this)
+    lateinit var customAdapter: CustomContactsListAdapter
+    lateinit var contactDao: ContactDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityContactBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        customAdapter = CustomContactsListAdapter(this, ArrayList())
+        binding.lvContacts.adapter = customAdapter
+
+        contactDao = ContactDao(this)
 
         binding.btnAddContact.setOnClickListener {
             addContact()
         }
-
 
         binding.lvContacts.onItemLongClickListener =
             AdapterView.OnItemLongClickListener { parent, view, position, id ->
@@ -47,7 +51,6 @@ class ContactActivity : AppCompatActivity() {
 
     private fun addContact() {
         try {
-
             val contactName = binding.etContactName.text.toString()
             val contactEmail = binding.etContactEmail.text.toString()
 
@@ -62,8 +65,9 @@ class ContactActivity : AppCompatActivity() {
         }
     }
 
-    fun showContacts(contactList: ArrayList<Contact>){
-        val arrayAdapter = ArrayAdapter(this, R.layout.simple_list_item_1, contactList)
-        binding.lvContacts.adapter = arrayAdapter
+    fun showContacts(contactList: ArrayList<Contact>) {
+        customAdapter.clear()
+        customAdapter.addAll(contactList)
+        customAdapter.notifyDataSetChanged()
     }
 }
