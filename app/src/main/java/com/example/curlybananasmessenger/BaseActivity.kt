@@ -1,5 +1,6 @@
 package com.example.curlybananasmessenger
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,54 +16,67 @@ import androidx.viewbinding.ViewBinding
 import com.example.curlybananasmessenger.databinding.ActivityBaseBinding
 import com.example.curlybananasmessenger.databinding.ActivityContactBinding
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 
- open class BaseActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity() {
 
-    open lateinit var drawerLayout: DrawerLayout
-    open lateinit var  actionBarDrawerToggle: ActionBarDrawerToggle
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var drawerToggle: ActionBarDrawerToggle
 
-     override fun setContentView(view: View?) {
+    @SuppressLint("InflateParams")
+    override fun setContentView(view: View?) {
 
-         drawerLayout = layoutInflater.inflate(R.layout.activity_base, null) as DrawerLayout
-         val container = drawerLayout.findViewById<FrameLayout>(R.id.frame_container) // OBS! Container
-         container.addView(view)
-         super.setContentView(drawerLayout)
+        drawerLayout = layoutInflater.inflate(R.layout.activity_base, null) as DrawerLayout
+        val container =
+            drawerLayout.findViewById<FrameLayout>(R.id.frame_container) // OBS! Container
+        container.addView(view)
+        super.setContentView(drawerLayout)
 
-         val toolbar = drawerLayout.findViewById<Toolbar>(R.id.toolbar)
-         setSupportActionBar(toolbar)
-         val navigationView = drawerLayout.findViewById<NavigationView>(R.id.nav_view)
-         navigationView.setNavigationItemSelectedListener {
-             onOptionsItemSelected(it)
-         }
+        val toolbar = drawerLayout.findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        val navigationView = drawerLayout.findViewById<NavigationView>(R.id.nv_navigation)
+        navigationView.setNavigationItemSelectedListener {
+            onOptionsItemSelected(it)
+        }
 
-         val toggle = ActionBarDrawerToggle(this,drawerLayout,R.string.navigation_drawer_open,R.string.navigation_drawer_close)
-         drawerLayout.addDrawerListener(toggle)
-         toggle.syncState()
+        drawerToggle = ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
+        drawerLayout.addDrawerListener(drawerToggle)
+        drawerToggle.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        navigationView.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.item_contacts -> {
+                    finish()
+                    startActivity(Intent(this, ContactActivity::class.java))
+                    true
+                }
 
+                R.id.item_add_contact -> {
+                    finish()
+                    startActivity(Intent(this, ContactActivity::class.java))
+                    true
+                }
 
-
-     }
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_base)
-//        // init drawer layout
-//        drawerLayout = findViewById(R.id.drawer_layout)
-//        // init action bar drawer toggle
-//        actionBarDrawerToggle = ActionBarDrawerToggle(this,drawerLayout,R.string.navigation_drawer_open,R.string.navigation_drawer_close)
-//        // add a drawer listener into  drawer layout
-//        drawerLayout.addDrawerListener(actionBarDrawerToggle)
-//        actionBarDrawerToggle.syncState()
-//
-//        // show menu icon and back icon while drawer open
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//    }
+                R.id.item_logout -> {
+                    FirebaseAuth.getInstance().signOut()
+                    true
+                }
+                else -> false
+            }
+        }
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // check conndition for drawer item with menu item
-        return if (actionBarDrawerToggle.onOptionsItemSelected(item)){
+        return if (drawerToggle.onOptionsItemSelected(item)) {
             true
-        }else{
+        } else {
             super.onOptionsItemSelected(item)
         }
 
