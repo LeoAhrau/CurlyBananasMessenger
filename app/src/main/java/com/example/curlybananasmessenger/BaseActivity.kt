@@ -24,10 +24,12 @@ open class BaseActivity : AppCompatActivity() {
         val container =
             drawerLayout.findViewById<FrameLayout>(R.id.frame_container) // OBS! Container
         container.addView(view)
+
         super.setContentView(drawerLayout)
 
         val toolbar = drawerLayout.findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+
         val navigationView = drawerLayout.findViewById<NavigationView>(R.id.nv_navigation)
         navigationView.setNavigationItemSelectedListener {
             onOptionsItemSelected(it)
@@ -41,6 +43,7 @@ open class BaseActivity : AppCompatActivity() {
         )
         drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
+        
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         navigationView.setNavigationItemSelectedListener { item ->
@@ -74,7 +77,6 @@ open class BaseActivity : AppCompatActivity() {
         } else {
             super.onOptionsItemSelected(item)
         }
-
     }
 }
 
