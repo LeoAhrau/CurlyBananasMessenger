@@ -21,9 +21,14 @@
             android:exported="true" />
         <activity
             android:name=".ContactActivity"
-            android:exported="false" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".TestActivity" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
+
+        <activity
+            android:name=".RegisterActivity" />
+        <activity
+            android:name=".TestActivity" />
+
         <activity
             android:name=".LoginActivity"
             android:exported="true">
