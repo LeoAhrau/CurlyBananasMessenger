@@ -22,6 +22,9 @@
         android:fitsSystemWindows="true"
         app:menu="@menu/drawer_menu"
         android:background="@color/light_brown"
-        app:itemTextColor="@color/white"/>
+        app:itemIconSize="30dp"
+        app:itemIconTint="@color/yellow"
+        app:itemTextColor="@color/white"
+        android:padding="10dp"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
