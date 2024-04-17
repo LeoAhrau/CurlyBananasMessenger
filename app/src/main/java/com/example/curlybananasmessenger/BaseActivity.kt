@@ -64,6 +64,7 @@ open class BaseActivity : AppCompatActivity() {
                 }
 
                 R.id.item_logout -> {
+                    // TODO Implement correct code
                     FirebaseAuth.getInstance().signOut()
                     true
                 }
