@@ -1,98 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    >
+    android:padding="20dp">
 
-    <TextView
-        android:id="@+id/tv_contacts"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:gravity="center_horizontal"
-        android:paddingBottom="20dp"
-        android:text="@string/tv_contacts"
+        android:layout_height="wrap_content">
 
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/tv_contacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
+            android:gravity="center_horizontal"
+            android:paddingBottom="20dp"
+            android:text="@string/tv_contacts"
 
-    <EditText
-        android:id="@+id/ed_search_contact"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:gravity="start"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        android:hint="@string/et_search"
-        android:paddingBottom="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_contacts" />
+        <EditText
+            android:id="@+id/ed_search_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:gravity="start"
 
-    <ListView
-        android:id="@+id/lv_contacts"
-        android:layout_width="match_parent"
-        android:layout_height="407dp"
-        android:paddingBottom="20dp"
+            android:hint="@string/et_search"
+            android:paddingBottom="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_contacts" />
 
-        app:layout_constraintBottom_toTopOf="@id/add_contact"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ed_search_contact"
-        app:layout_constraintVertical_bias="0.0" />
+        <ListView
+            android:id="@+id/lv_contacts"
+            android:layout_width="match_parent"
+            android:layout_height="407dp"
+            android:paddingBottom="20dp"
 
-    <LinearLayout
-        android:id="@+id/add_contact"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lv_contacts"
-        tools:layout_editor_absoluteX="20dp">
+            app:layout_constraintBottom_toTopOf="@id/add_contact"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ed_search_contact"
+            app:layout_constraintVertical_bias="0.0" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/add_contact"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingRight="20dp">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lv_contacts"
+            tools:layout_editor_absoluteX="20dp">
 
-
-<!--            <EditText-->
-<!--                android:id="@+id/et_contact_id"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:hint="@string/et_contact_id" />-->
-            <EditText
-                android:id="@+id/et_contact_name"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="@string/et_contact_name" />
-            <EditText
-                android:id="@+id/et_contact_email"
+                android:orientation="vertical"
+                android:paddingRight="@dimen/padding_medium">
+
+                <EditText
+                    android:id="@+id/et_contact_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:hint="@string/et_contact_name" />
+
+                <EditText
+                    android:id="@+id/et_contact_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/padding_small"
+                    android:hint="@string/et_contact_email" />
+
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/btn_add_contact"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Write contact e-mail" />
-
+                android:text="@string/btn_add_contact" />
         </LinearLayout>
 
 
-        <Button
-            android:id="@+id/btn_add_contact"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add to contacts" />
-    </LinearLayout>
-
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
