@@ -76,7 +76,6 @@ class ContactActivity : AppCompatActivity() {
     private fun filterContacts(query: String) {
         val filteredContacts = ArrayList<Contact>()
 
-        // Filter contacts by name or email
         for (contact in allContacts) {
             if (contact.contactName?.contains(query, ignoreCase = true) == true ||
                 contact.contactEmail?.contains(query, ignoreCase = true) == true
@@ -85,15 +84,17 @@ class ContactActivity : AppCompatActivity() {
             }
         }
 
-        // Update the ListView with filtered contacts
         customAdapter.clear()
         customAdapter.addAll(filteredContacts)
         customAdapter.notifyDataSetChanged()
     }
 
     fun showContacts(contactList: ArrayList<Contact>) {
+        val sortedContacts = contactList.sortedWith(compareBy { it.contactName?.lowercase() })
+
         allContacts.clear()
-        allContacts.addAll(contactList)
+        allContacts.addAll(sortedContacts)
+
         filterContacts(binding.edSearchContact.text.toString())
     }
 }

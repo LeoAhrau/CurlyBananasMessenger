@@ -5,14 +5,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:backgroundTint="@color/yellow"
     app:cardCornerRadius="@dimen/medium_corner_radius"
-    android:padding="@dimen/medium_padding">
+    android:padding="@dimen/padding_medium">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:padding="@dimen/small_padding">
+        android:padding="@dimen/padding_small">
 
         <TextView
             android:id="@+id/tv_contacts_name"
