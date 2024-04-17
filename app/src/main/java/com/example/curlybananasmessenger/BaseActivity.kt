@@ -16,9 +16,11 @@ open class BaseActivity : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var drawerToggle: ActionBarDrawerToggle
+    private lateinit var auth: FirebaseAuth
 
     @SuppressLint("InflateParams")
     override fun setContentView(view: View?) {
+        auth = FirebaseAuth.getInstance()
 
         drawerLayout = layoutInflater.inflate(R.layout.activity_base, null) as DrawerLayout
         val container =
@@ -61,8 +63,9 @@ open class BaseActivity : AppCompatActivity() {
                 }
 
                 R.id.item_logout -> {
-                    // TODO Implement correct code
-                    FirebaseAuth.getInstance().signOut()
+                    // TODO Change this
+                    auth.signOut()
+                    println("Logged out")
                     true
                 }
                 else -> false
@@ -71,7 +74,6 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // check conndition for drawer item with menu item
         return if (drawerToggle.onOptionsItemSelected(item)) {
             true
         } else {
@@ -79,5 +81,3 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 }
-
-
