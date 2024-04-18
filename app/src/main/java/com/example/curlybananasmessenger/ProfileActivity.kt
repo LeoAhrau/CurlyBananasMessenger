@@ -1,7 +1,13 @@
 package com.example.curlybananasmessenger
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.curlybananasmessenger.databinding.ActivityProfileBinding
 import com.google.firebase.Timestamp
@@ -26,7 +32,62 @@ class ProfileActivity : AppCompatActivity() {
 
         // Retrieve user information
         getUserInfo()
+
+        binding.ivProfileImage.setOnClickListener {
+            showImageOptionsDialog()
+        }
     }
+
+    private fun showImageOptionsDialog() {
+        val options = arrayOf("Choose from Gallery", "Take a Photo")
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Select Option")
+        builder.setItems(options) { dialog, which ->
+            when (which) {
+                0 -> chooseFromGallery()
+                1 -> takePhoto()
+            }
+        }
+        builder.show()
+    }
+
+    private fun chooseFromGallery() {
+        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(galleryIntent, REQUEST_GALLERY)
+    }
+
+    private fun takePhoto() {
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(cameraIntent, REQUEST_CAMERA)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK) {
+            when (requestCode) {
+                REQUEST_GALLERY -> {
+                    // Handle image chosen from gallery
+                    val imageUri = data?.data
+                    binding.ivProfileImage.setImageURI(imageUri)
+                }
+                REQUEST_CAMERA -> {
+                    // Handle photo taken from camera
+                    val imageBitmap = data?.extras?.get("data") as? Bitmap
+                    imageBitmap?.let {
+                        binding.ivProfileImage.setImageBitmap(imageBitmap)
+                    }
+                }
+            }
+        }
+    }
+
+    companion object {
+        private const val REQUEST_GALLERY = 1
+        private const val REQUEST_CAMERA = 2
+    }
+
+
 
     private fun getUserInfo() {
         val currentUserUid = auth.currentUser?.uid ?: ""
@@ -39,15 +100,18 @@ class ProfileActivity : AppCompatActivity() {
 
                         if (user != null) {
                             // Display user information
-                            val profileName = getString(R.string.profile_name_label) + " " + user.nickname
+                            val profileName =
+                                getString(R.string.profile_name_label) + " " + user.nickname
                             binding.tvProfileName.text = profileName
-                            val profileEmail = getString(R.string.profile_email_label) + " " + user.nickname
+                            val profileEmail =
+                                getString(R.string.profile_email_label) + " " + user.username
                             binding.tvProfileEmail.text = profileEmail
 
                             // Convert timestamp to readable date format
                             val timestamp = user.dateOfJoin as? Timestamp
                             val formattedDate = formatDate(timestamp?.toDate())
-                            val profileDate = getString(R.string.profile_date_label) + " " + formattedDate
+                            val profileDate =
+                                getString(R.string.profile_date_label) + " " + formattedDate
                             binding.tvProfileDate.text = profileDate
                         } else {
                             Log.e("ProfileActivity", "User data is null")
