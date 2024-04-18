@@ -22,7 +22,11 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
+        binding.buttonShowContacts.setOnClickListener {
+            val intent = Intent(this, ContactsActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
         binding.btnRegister.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
