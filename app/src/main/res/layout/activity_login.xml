@@ -80,4 +80,11 @@
         app:layout_constraintHorizontal_bias="0.796"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/buttonShowContacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show Contacts" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
