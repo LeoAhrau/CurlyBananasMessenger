@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.curlybananasmessenger.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.coroutines.flow.emptyFlow
-import java.util.UUID
+import com.google.firebase.database.ServerValue
+
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -51,6 +51,10 @@ class RegisterActivity : AppCompatActivity() {
                         if (user != null) {
                             val userUid = user.uid
                             val user = User(userUid, nickname, username, password)
+                            val timestamp = ServerValue.TIMESTAMP
+
+                            // Add date of joining to user object
+                            user.dateOfJoin = timestamp
                             userDao.registerUser(user)
                             Toast.makeText(this, "Successfully registered", Toast.LENGTH_SHORT)
                                 .show()

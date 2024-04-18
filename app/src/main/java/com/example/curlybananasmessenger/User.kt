@@ -2,9 +2,10 @@ package com.example.curlybananasmessenger
 
 
 data class User(
-    val id: String?,
-    val nickname: String?,
-    val username: String?,
-    val password: String?)
+    val id: String? = null,
+    val nickname: String? = null,
+    val username: String? = null,
+    val password: String? = null,
+var dateOfJoin: Any? = null)
 
 

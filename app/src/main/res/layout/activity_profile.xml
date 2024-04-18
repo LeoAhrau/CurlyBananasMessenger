@@ -22,15 +22,19 @@
     <TextView
         android:id="@+id/tv_profile_name"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/margin_big"
 
         />
 
     <TextView
         android:id="@+id/tv_profile_email"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:layout_marginTop="@dimen/margin_medium"
 
         />
@@ -38,7 +42,9 @@
     <TextView
         android:id="@+id/tv_profile_date"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:layout_marginTop="@dimen/margin_medium"
 
 
@@ -49,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="@string/et_change_name"
-        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_big"
 
         />
 
