@@ -20,4 +20,5 @@
     <string name="btn_add_contact">Add to contacts</string>
     <string name="et_change_name">Write a new name</string>
     <string name="btn_save_profile">Save changes</string>
+    <string name="btn_log_out">Log out</string>
 </resources>
