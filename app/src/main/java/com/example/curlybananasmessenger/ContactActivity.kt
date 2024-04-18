@@ -2,7 +2,6 @@ package com.example.curlybananasmessenger
 
 import android.R
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,10 +9,9 @@ import android.util.Log
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.example.curlybananasmessenger.databinding.ActivityContactBinding
-import com.google.firebase.auth.FirebaseAuth
 import java.util.UUID
 
-class ContactActivity : AppCompatActivity() {
+class ContactActivity : BaseActivity() {
 
     lateinit var binding: ActivityContactBinding
     lateinit var customAdapter: CustomContactsListAdapter

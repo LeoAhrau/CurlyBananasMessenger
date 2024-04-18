@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_profile"
+        android:title="@string/item_my_profile"
+        android:icon="@drawable/profile" />
+    <item
+        android:id="@+id/item_conversations"
+        android:title="@string/item_my_conversations"
+        android:icon="@drawable/chat_bubble" />
+    <item
+        android:id="@+id/item_contacts"
+        android:title="@string/item_my_contacts"
+        android:icon="@drawable/contact" />
+    <item
+        android:id="@+id/item_add_contact"
+        android:title="@string/item_add_contact"
+        android:icon="@drawable/contact_add" />
+    <item
+        android:id="@+id/item_logout"
+        android:title="@string/item_logout"
+        android:icon="@drawable/logout" />
+</menu>
