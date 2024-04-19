@@ -4,7 +4,7 @@ package com.example.curlybananasmessenger
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity (tableName = "message_table")
 data class Message(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val message: String

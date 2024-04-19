@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 
 
@@ -20,7 +19,7 @@ class ChatActivity : BaseActivity() {
         val sendButton: Button = findViewById(R.id.sendButton)
         val lastMessageTextView: TextView = findViewById(R.id.lastMessageTextView)
 
-        val dao = MessageAppDatabase.getDatabase(application).messageDao()
+        val dao = AppDatabase.getDatabase(application).messageDao()
         val repository = MessageRepository(dao)
         messageViewModel = ViewModelProvider(this, ViewModelFactory(repository))[MessageViewModel::class.java]
 
