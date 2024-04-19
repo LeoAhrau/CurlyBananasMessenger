@@ -38,6 +38,7 @@ class RegisterActivity : AppCompatActivity() {
             val username = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
 
+
             if (nickname.isEmpty()) {
                 Toast.makeText(this, "Enter thy title", Toast.LENGTH_SHORT).show()
             } else if (!Patterns.EMAIL_ADDRESS.matcher(username).matches()) {

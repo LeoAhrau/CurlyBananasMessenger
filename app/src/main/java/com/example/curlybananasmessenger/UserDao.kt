@@ -20,6 +20,7 @@ class UserDao {
         userDetails["username"] = user.username ?: ""
         userDetails["password"] = user.password ?: ""
         userDetails["dateOfJoin"] = Timestamp.now()
+        userDetails["profileImage"] = user.profileImage ?: ""
 
         usersCollection.document(user.id ?: "").set(userDetails)
             .addOnSuccessListener { Log.i("SUCCESS", "Successfully registered user") }

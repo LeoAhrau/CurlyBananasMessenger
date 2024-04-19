@@ -6,6 +6,7 @@ data class User(
     val nickname: String? = null,
     val username: String? = null,
     val password: String? = null,
-var dateOfJoin: Any? = null)
+    var dateOfJoin: Any? = null,
+    val profileImage: String? = null)
 
 
