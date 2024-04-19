@@ -114,49 +114,70 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun saveProfile() {
+        val currentUserUid = auth.currentUser?.uid ?: ""
+        if (currentUserUid.isNotEmpty()) {
+            val currentUserDocRef = firestoreDB.collection("users").document(currentUserUid)
+            currentUserDocRef.get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        val user: User? = document.toObject(User::class.java)
 
-        val newNickname = binding.etChangeName.text.toString()
+                        if (user != null) {
+                            // Check if user has a profile image
+                            if (!user.profileImage.isNullOrEmpty()) {
+                                // Load profile image from Firestore Storage
+                                val storageRef = fbStorage.reference.child("profile_images").child("$currentUserUid.jpg")
+                                storageRef.downloadUrl.addOnSuccessListener { uri ->
+                                    // Load image from URL into ImageView
+                                    thread {
+                                        try {
+                                            val url = URL(uri.toString())
+                                            val connection = url.openConnection()
+                                            connection.doInput = true
+                                            connection.connect()
+                                            val input = connection.getInputStream()
+                                            val bitmap = BitmapFactory.decodeStream(input)
 
-        // Check if an image is selected
-        selectedImageUri?.let { imageUri ->
-            // Get current user ID
-            val currentUserUid = auth.currentUser?.uid ?: ""
-
-            if (currentUserUid.isNotEmpty()) {
-                // Define storage reference path
-                val storageRef = fbStorage.reference.child("profile_images").child("$currentUserUid.jpg")
-
-                // Upload image to Firebase Storage
-                storageRef.putFile(imageUri)
-                    .addOnSuccessListener { taskSnapshot ->
-                        // Get download URL of the uploaded image
-                        storageRef.downloadUrl.addOnSuccessListener { uri ->
-                            val imageUrl = uri.toString()
-
-                            // Update user profile with the image URL
-                            val currentUserDocRef = firestoreDB.collection("users").document(currentUserUid)
-                            currentUserDocRef.update("profileImage", imageUrl)
-                                .addOnSuccessListener {
-                                    // Profile updated successfully
-                                    Log.d("ProfileActivity", "Profile image saved successfully")
-                                    // You can add further actions here if needed
+                                            runOnUiThread {
+                                                binding.ivProfileImage.setImageBitmap(bitmap)
+                                            }
+                                        } catch (e: Exception) {
+                                            Log.e("ProfileActivity", "Failed to load profile image: ${e.message}", e)
+                                        }
+                                    }
+                                }.addOnFailureListener { e ->
+                                    Log.e("ProfileActivity", "Failed to load profile image: ${e.message}", e)
                                 }
-                                .addOnFailureListener { e ->
-                                    // Handle failure
-                                    Log.e("ProfileActivity", "Failed to save profile image: ${e.message}", e)
-                                }
+                            }
+                        } else {
+                            Log.e("ProfileActivity", "User data is null")
                         }
+                    } else {
+                        Log.e("ProfileActivity", "User document does not exist")
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.e("ProfileActivity", "Failed to retrieve user data: ${e.message}", e)
+                }
+
+            // Update user's nickname in Firestore
+            val newNickname = binding.etChangeName.text.toString()
+            if (newNickname != null){
+                currentUserDocRef.update("nickname", newNickname)
+                    .addOnSuccessListener {
+                        binding.tvProfileName.text = getString(R.string.profile_name_label) + " " + newNickname
+                        binding.etChangeName.text.clear()
+                        Log.d("ProfileActivity", "Nickname updated successfully")
+                        // You can add further actions here if needed
                     }
                     .addOnFailureListener { e ->
                         // Handle failure
-                        Log.e("ProfileActivity", "Failed to upload profile image: ${e.message}", e)
+                        Log.e("ProfileActivity", "Failed to update nickname: ${e.message}", e)
                     }
-            } else {
-                Log.e("ProfileActivity", "Current user UID is empty")
             }
-        } ?: run {
-            // No image selected
-            Log.e("ProfileActivity", "No image selected")
+
+        } else {
+            Log.e("ProfileActivity", "Current user UID is empty")
         }
     }
 
