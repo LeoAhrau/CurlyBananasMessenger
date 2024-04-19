@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.curlybananasmessenger.databinding.ActivityProfileBinding
@@ -21,7 +20,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.concurrent.thread
 import java.net.URL
-import java.net.HttpURLConnection
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -50,6 +48,14 @@ class ProfileActivity : AppCompatActivity() {
         binding.btnSaveProfile.setOnClickListener {
             saveProfile()
         }
+
+        binding.btnLogout.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
     }
 
 
