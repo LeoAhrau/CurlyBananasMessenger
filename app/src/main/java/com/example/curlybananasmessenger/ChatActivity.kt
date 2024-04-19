@@ -1,39 +1,87 @@
 package com.example.curlybananasmessenger
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-
+import com.example.curlybananasmessenger.databinding.ActivityChatBinding
+import com.google.firebase.firestore.FirebaseFirestore
+import java.lang.Exception
+import java.util.UUID
 
 
 class ChatActivity : BaseActivity() {
+    private lateinit var binding: ActivityChatBinding
     private lateinit var messageViewModel: MessageViewModel
+    private var idList: List<String>? = listOf()
+
+    private val KEY_ID = "id"
+    private val KEY_TEXT = "message"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat)
 
-        val messageEditText: EditText = findViewById(R.id.messageEditText)
+        binding = ActivityChatBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        checkFireStoreCollection()
+
         val sendButton: Button = findViewById(R.id.sendButton)
-        val lastMessageTextView: TextView = findViewById(R.id.lastMessageTextView)
 
-        val dao = AppDatabase.getDatabase(application).messageDao()
-        val repository = MessageRepository(dao)
-        messageViewModel = ViewModelProvider(this, ViewModelFactory(repository))[MessageViewModel::class.java]
+        messageViewModel = ViewModelProvider(this)[MessageViewModel::class.java]
+
+        messageViewModel.getAllMessageIds().observe(this) { ids ->
+            idList = ids
+        }
+
+        messageViewModel.getEveryMessage().observe(this) { messages ->
+            val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, messages)
+            binding.lvList.adapter = adapter
+        }
 
         sendButton.setOnClickListener {
-            val messageText = messageEditText.text.toString()
-            if (messageText.isNotEmpty()) {
-                val message = Message(message = messageText)
-                messageViewModel.insert(message)
-                messageEditText.setText("")
-
-                // Uppdatera TextView med det senast inskickade meddelandet
-                lastMessageTextView.text = "Senast sparad: $messageText"
-            }
+           addMessage()
         }
+    }
+
+    private fun addMessage() {
+        try {
+            val text = binding.messageEditText.text.toString()
+            val message =
+                Message(id = UUID.randomUUID().toString(), message = text)
+            messageViewModel.addToFireStore(message)
+            binding.messageEditText.text.clear()
+
+        } catch (e: Exception) {
+            println(e.stackTrace)
+            Toast.makeText(this, "Error adding user to database", Toast.LENGTH_SHORT).show()
+        }
+    }
+    private fun checkFireStoreCollection() {
+        FirebaseFirestore
+            .getInstance()
+            .collection("messagesTest")
+            .addSnapshotListener(this) { value, error ->
+                if (error != null) {
+                    Log.e("ERROR", "failed to listen for updates")
+                }
+                if (value != null) {
+                    for (document in value) {
+                        val id = document.getString(KEY_ID) as String
+                        val text = document.getString(KEY_TEXT) as String
+                        val message = Message(id, text)
+
+                        if (idList?.contains(document.id) == false) {
+                            messageViewModel.insert(message)
+                        }
+                    }
+                    Log.i("SUCCESS", "Snapshot success")
+                }
+            }
     }
 }
 

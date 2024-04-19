@@ -5,6 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ListView
+        android:id="@+id/lv_list"
+        app:layout_constraintTop_toBottomOf="@+id/lastMessageTextView"
+        app:layout_constraintBottom_toTopOf="@+id/messageEditText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
     <EditText
         android:id="@+id/messageEditText"
         android:layout_width="397dp"
