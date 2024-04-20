@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.curlybananasmessenger.databinding.ActivityProfileBinding
@@ -59,7 +60,6 @@ class ProfileActivity : AppCompatActivity() {
     }
 
 
-
     private fun showImageOptionsDialog() {
         val options = arrayOf("Choose from Gallery", "Take a Photo")
 
@@ -74,6 +74,10 @@ class ProfileActivity : AppCompatActivity() {
         builder.show()
     }
 
+
+    /* 'startActivityForResult(Intent, Int): Unit' is deprecated. But still working in Kotlin!
+        Used launcher instead
+
     private fun chooseFromGallery() {
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(galleryIntent, REQUEST_GALLERY)
@@ -84,7 +88,7 @@ class ProfileActivity : AppCompatActivity() {
         startActivityForResult(cameraIntent, REQUEST_CAMERA)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
@@ -106,6 +110,47 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
     }
+     */
+
+    private fun takePhoto() {
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        resultLauncher.launch(cameraIntent)
+    }
+
+    fun chooseFromGallery() {
+        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        resultLauncher.launch(galleryIntent)
+    }
+
+    companion object {
+        private const val REQUEST_GALLERY = 1
+        private const val REQUEST_CAMERA = 2
+    }
+
+    var resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+
+                when (result.resultCode) {
+                    REQUEST_GALLERY -> {
+                        val imageUri = data?.data
+                        binding.ivProfileImage.setImageURI(imageUri)
+                        selectedImageUri = imageUri
+                    }
+
+                    REQUEST_CAMERA -> {
+                        val imageBitmap = data?.extras?.get("data") as? Bitmap
+                        imageBitmap?.let {
+                            binding.ivProfileImage.setImageBitmap(imageBitmap)
+                            // Convert bitmap to URI
+                            selectedImageUri = bitmapToUriConverter(imageBitmap)
+                        }
+                    }
+                }
+            }
+        }
+
 
     private fun bitmapToUriConverter(bitmap: Bitmap): Uri {
         val bytes = ByteArrayOutputStream()
@@ -132,7 +177,8 @@ class ProfileActivity : AppCompatActivity() {
                             // Check if user has a profile image
                             if (!user.profileImage.isNullOrEmpty()) {
                                 // Load profile image from Firestore Storage
-                                val storageRef = fbStorage.reference.child("profile_images").child("$currentUserUid.jpg")
+                                val storageRef = fbStorage.reference.child("profile_images")
+                                    .child("$currentUserUid.jpg")
                                 storageRef.downloadUrl.addOnSuccessListener { uri ->
                                     // Load image from URL into ImageView
                                     thread {
@@ -148,11 +194,19 @@ class ProfileActivity : AppCompatActivity() {
                                                 binding.ivProfileImage.setImageBitmap(bitmap)
                                             }
                                         } catch (e: Exception) {
-                                            Log.e("ProfileActivity", "Failed to load profile image: ${e.message}", e)
+                                            Log.e(
+                                                "ProfileActivity",
+                                                "Failed to load profile image: ${e.message}",
+                                                e
+                                            )
                                         }
                                     }
                                 }.addOnFailureListener { e ->
-                                    Log.e("ProfileActivity", "Failed to load profile image: ${e.message}", e)
+                                    Log.e(
+                                        "ProfileActivity",
+                                        "Failed to load profile image: ${e.message}",
+                                        e
+                                    )
                                 }
                             }
                         } else {
@@ -168,16 +222,15 @@ class ProfileActivity : AppCompatActivity() {
 
             // Update user's nickname in Firestore
             val newNickname = binding.etChangeName.text.toString()
-            if (newNickname != null){
+            if (newNickname.isNotEmpty()) {
                 currentUserDocRef.update("nickname", newNickname)
                     .addOnSuccessListener {
-                        binding.tvProfileName.text = getString(R.string.profile_name_label) + " " + newNickname
+                        binding.tvProfileName.text =
+                            getString(R.string.profile_name_label) + " " + newNickname
                         binding.etChangeName.text.clear()
                         Log.d("ProfileActivity", "Nickname updated successfully")
-                        // You can add further actions here if needed
                     }
                     .addOnFailureListener { e ->
-                        // Handle failure
                         Log.e("ProfileActivity", "Failed to update nickname: ${e.message}", e)
                     }
             }
@@ -186,14 +239,6 @@ class ProfileActivity : AppCompatActivity() {
             Log.e("ProfileActivity", "Current user UID is empty")
         }
     }
-
-
-    companion object {
-        private const val REQUEST_GALLERY = 1
-        private const val REQUEST_CAMERA = 2
-    }
-
-
 
     private fun getUserInfo() {
         val currentUserUid = auth.currentUser?.uid ?: ""
@@ -223,7 +268,8 @@ class ProfileActivity : AppCompatActivity() {
                             // Check if user has a profile image
                             if (!user.profileImage.isNullOrEmpty()) {
                                 // Load profile image from Firestore Storage
-                                val storageRef = fbStorage.reference.child("profile_images").child("$currentUserUid.jpg")
+                                val storageRef = fbStorage.reference.child("profile_images")
+                                    .child("$currentUserUid.jpg")
                                 storageRef.downloadUrl.addOnSuccessListener { uri ->
                                     // Load image from URL into ImageView
                                     thread {
@@ -239,11 +285,19 @@ class ProfileActivity : AppCompatActivity() {
                                                 binding.ivProfileImage.setImageBitmap(bitmap)
                                             }
                                         } catch (e: Exception) {
-                                            Log.e("ProfileActivity", "Failed to load profile image: ${e.message}", e)
+                                            Log.e(
+                                                "ProfileActivity",
+                                                "Failed to load profile image: ${e.message}",
+                                                e
+                                            )
                                         }
                                     }
                                 }.addOnFailureListener { e ->
-                                    Log.e("ProfileActivity", "Failed to load profile image: ${e.message}", e)
+                                    Log.e(
+                                        "ProfileActivity",
+                                        "Failed to load profile image: ${e.message}",
+                                        e
+                                    )
                                 }
                             }
                         } else {
