@@ -6,8 +6,11 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.OnBackPressedCallback
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.curlybananasmessenger.databinding.ActivityContactBinding
 import java.util.UUID
 
@@ -17,11 +20,16 @@ class ContactActivity : BaseActivity() {
     lateinit var customAdapter: CustomContactsListAdapter
     lateinit var contactDao: ContactDao
     private lateinit var allContacts: ArrayList<Contact>
+    lateinit var mainView: ConstraintLayout
+    private val fragment = ChatInterfaceFragment()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityContactBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        mainView = binding.mainLayout
 
         customAdapter = CustomContactsListAdapter(this, ArrayList())
         binding.lvContacts.adapter = customAdapter
@@ -49,15 +57,33 @@ class ContactActivity : BaseActivity() {
             addContact()
         }
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (supportFragmentManager.backStackEntryCount > 0) {
+                    supportFragmentManager.popBackStack()
+                    mainView.visibility = View.VISIBLE
+                } else {
+                    finish()
+                }
+            }
+        })
+
+
         binding.lvContacts.onItemLongClickListener =
             AdapterView.OnItemLongClickListener { parent, view, position, id ->
                 val selectedContact = parent.getItemAtPosition(position) as Contact
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("contactName", selectedContact)
-                startActivity(intent)
-                finish()
+                mainView.visibility = View.GONE
+                val fragmentTransaction = supportFragmentManager.beginTransaction()
+                fragmentTransaction.add(binding.chatInterfaceContainer.id, fragment)
+                fragmentTransaction.addToBackStack(null)
+                fragmentTransaction.commit()
+
+                val bundle = Bundle()
+                bundle.putString("contactName", selectedContact.contactName)
+                fragment.arguments = bundle
                 true
             }
+
 
         //binding.lvContacts.onItemLongClickListener =
         //            AdapterView.OnItemLongClickListener { parent, view, position, id ->

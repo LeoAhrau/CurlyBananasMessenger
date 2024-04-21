@@ -34,6 +34,7 @@ class ChatInterfaceFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        contactName = binding.contactName
 
         try {
             val contactName = arguments?.getString("contactName")
@@ -44,16 +45,11 @@ class ChatInterfaceFragment : Fragment() {
             Log.e("Error", "Failed to change name", e)
         }
 
-        binding.contactName.text = "Hello"
-
 
         //-------------------- Testing --------------------
         messageField = binding.etChatMessage
         sendButton = binding.btnSendMessage
         chatList = binding.rvChat
-
-
-
 
         adapter = CustomChatMessageAdapter(requireContext(), chatItemList)
         chatList.adapter = adapter
