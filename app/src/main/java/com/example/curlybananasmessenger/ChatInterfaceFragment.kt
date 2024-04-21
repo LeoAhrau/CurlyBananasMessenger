@@ -46,9 +46,7 @@ class ChatInterfaceFragment : Fragment() {
             idList = ids
         }
         messageViewModel.getEveryMessage().observe(requireActivity()) { messages ->
-            textOfMessages = messages.map { message ->
-                message.message
-            }.toMutableList()
+
 
             adapter = CustomChatMessageAdapter(requireContext(), textOfMessages!!)
             chatList.adapter = adapter
