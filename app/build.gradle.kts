@@ -48,7 +48,8 @@ android {
 dependencies {
     implementation("androidx.activity:activity-ktx:1.8.2")//Room
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")//Room
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0") //Room
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation("com.google.android.datatransport:transport-runtime:3.3.0") //Room
     ksp("androidx.room:room-compiler:2.6.1")  // Room
     //kapt("androidx.room:room-compiler:2.6.1")  // Room
     implementation("androidx.room:room-common:2.6.1")//Room
@@ -59,13 +60,14 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.11.1")
     implementation("com.google.firebase:firebase-auth")
 
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.fragment:fragment-ktx:1.6.2")
 
-    implementation("com.google.android.material:material:1.12.0-rc01")
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("com.google.android.material:material:1.13.0-alpha01")
+    implementation("androidx.core:core-ktx:1.13.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
