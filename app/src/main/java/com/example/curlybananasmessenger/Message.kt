@@ -6,28 +6,15 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity (tableName = "message_table",foreignKeys = [
-    ForeignKey(
-        entity = User::class,
-        parentColumns = ["id"],
-        childColumns = ["user_sender"],
-        onDelete = ForeignKey.CASCADE
-    ),
-    ForeignKey(
-        entity = User::class,
-        parentColumns = ["id"],
-        childColumns = ["user_receiver"],
-        onDelete = ForeignKey.CASCADE
-    )
-])
+@Entity (tableName = "message_table")
 data class Message(
     @PrimaryKey() val id: String = "",
     @ColumnInfo(name = "text")
     val message: String = "",
-    @ColumnInfo(name = "user_sender")
-    val userSender: String = "",
-    @ColumnInfo(name = "user_receiver")
-    val userReceiver: String = ""
+//    @ColumnInfo(name = "user_sender")
+//    val userSender: String = "",
+//    @ColumnInfo(name = "user_receiver")
+//    val userReceiver: String = ""
 )
 
 

@@ -9,9 +9,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.curlybananasmessenger.databinding.FragmentChatInterfaceBinding
+import com.google.firebase.firestore.FirebaseFirestore
+import java.util.UUID
 
 class ChatInterfaceFragment : Fragment() {
     private lateinit var binding: FragmentChatInterfaceBinding
@@ -20,6 +24,14 @@ class ChatInterfaceFragment : Fragment() {
     private lateinit var chatList: RecyclerView
     private lateinit var adapter: CustomChatMessageAdapter
     private lateinit var contactName: TextView
+    private lateinit var messageViewModel: MessageViewModel
+    private var idList: List<String>? = listOf()
+    private var textOfMessages: MutableList<String>? = mutableListOf()
+
+    private val KEY_ID = "id"
+    private val KEY_TEXT = "message"
+//    val KEY_SENDER = "user_sender"
+//    val KEY_RECEIVER = "user_receiver"
 
     private val chatItemList = mutableListOf<String>()
 
@@ -28,13 +40,31 @@ class ChatInterfaceFragment : Fragment() {
         savedInstanceState: Bundle?
 
     ): View {
+        messageViewModel = ViewModelProvider(this)[MessageViewModel::class.java]
+        messageViewModel.getAllMessageIds().observe(requireActivity()) { ids ->
+            idList = ids
+            println("idList from livedata = ${idList}")
+        }
+        messageViewModel.getEveryMessage().observe(requireActivity()) { messages ->
+            textOfMessages = messages.map { message ->
+                message.message
+            }.toMutableList()
+            adapter = CustomChatMessageAdapter(requireContext(), textOfMessages!!)
+            chatList.adapter = adapter
+            chatList.layoutManager = LinearLayoutManager(requireContext())
+
+        }
         binding = FragmentChatInterfaceBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        checkFireStoreCollection()
         contactName = binding.contactName
+        messageField = binding.etChatMessage
+        sendButton = binding.btnSendMessage
+        chatList = binding.rvChat
 
         try {
             val contactName = arguments?.getString("contactName")
@@ -45,27 +75,46 @@ class ChatInterfaceFragment : Fragment() {
             Log.e("Error", "Failed to change name", e)
         }
 
-
-        //-------------------- Testing --------------------
-        messageField = binding.etChatMessage
-        sendButton = binding.btnSendMessage
-        chatList = binding.rvChat
-
-        adapter = CustomChatMessageAdapter(requireContext(), chatItemList)
-        chatList.adapter = adapter
-        chatList.layoutManager = LinearLayoutManager(requireContext())
-
         sendButton.setOnClickListener {
-            val messageText = messageField.text.toString()
-            if (messageText.isNotEmpty()) {
-                chatItemList.add(messageText)
-                adapter.notifyItemInserted(chatItemList.size - 1)
-                //chatList.smoothScrollToPosition(chatItemList.size - 1)
-                messageField.text.clear()
-
-
-            }
+          addMessage()
         }
-        //-------------------- Testing --------------------
+    }
+
+    private fun checkFireStoreCollection() {
+        FirebaseFirestore
+            .getInstance()
+            .collection("messagesTest")
+            .addSnapshotListener(requireActivity()) { value, error ->
+                if (error != null) {
+                    Log.e("ERROR", "failed to listen for updates")
+                }
+                if (value != null) {
+
+                    for (document in value) {
+                        val id = document.getString(KEY_ID) as String
+                        val text = document.getString(KEY_TEXT) as String
+                        val message = Message(id, text)
+
+                        if (idList?.contains(document.id) == false) {
+                            messageViewModel.insert(message)
+                        }
+                    }
+                    Log.i("SUCCESS", "Snapshot success")
+                }
+            }
+    }
+    private fun addMessage() {
+        try {
+            val text = messageField.text.toString()
+            val message =
+                Message(id = UUID.randomUUID().toString(), message = text)
+            if (text.isNotEmpty()) {
+                messageViewModel.addToFireStore(message)
+                messageField.text.clear()
+            }
+        } catch (e: java.lang.Exception) {
+            println(e.stackTrace)
+            Toast.makeText(requireContext(), "Error adding user to database", Toast.LENGTH_SHORT).show()
+        }
     }
 }
