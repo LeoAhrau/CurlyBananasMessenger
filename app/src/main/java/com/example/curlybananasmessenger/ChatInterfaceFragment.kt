@@ -43,12 +43,12 @@ class ChatInterfaceFragment : Fragment() {
         messageViewModel = ViewModelProvider(this)[MessageViewModel::class.java]
         messageViewModel.getAllMessageIds().observe(requireActivity()) { ids ->
             idList = ids
-            println("idList from livedata = ${idList}")
         }
         messageViewModel.getEveryMessage().observe(requireActivity()) { messages ->
             textOfMessages = messages.map { message ->
                 message.message
             }.toMutableList()
+            
             adapter = CustomChatMessageAdapter(requireContext(), textOfMessages!!)
             chatList.adapter = adapter
             chatList.layoutManager = LinearLayoutManager(requireContext())
