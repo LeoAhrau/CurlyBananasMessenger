@@ -21,6 +21,8 @@ class ChatActivity : BaseActivity() {
 
     private val KEY_ID = "id"
     private val KEY_TEXT = "message"
+    val KEY_SENDER = "user_sender"
+    val KEY_RECEIVER = "user_receiver"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,8 +53,9 @@ class ChatActivity : BaseActivity() {
     private fun addMessage() {
         try {
             val text = binding.messageEditText.text.toString()
+            val id = UUID.randomUUID().toString()
             val message =
-                Message(id = UUID.randomUUID().toString(), message = text)
+                Message(id = id, message = text, userSender = id, userReceiver = UUID.randomUUID().toString())
             messageViewModel.addToFireStore(message)
             binding.messageEditText.text.clear()
 
@@ -73,7 +76,9 @@ class ChatActivity : BaseActivity() {
                     for (document in value) {
                         val id = document.getString(KEY_ID) as String
                         val text = document.getString(KEY_TEXT) as String
-                        val message = Message(id, text)
+                        val userSender = document.getString(KEY_SENDER) as String
+                        val userReceiver = document.getString(KEY_RECEIVER) as String
+                        val message = Message(id, text, userSender, userReceiver)
 
                         if (idList?.contains(document.id) == false) {
                             messageViewModel.insert(message)

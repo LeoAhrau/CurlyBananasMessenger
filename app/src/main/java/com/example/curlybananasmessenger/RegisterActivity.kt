@@ -45,9 +45,13 @@ class RegisterActivity : AppCompatActivity() {
             } else if (password.isEmpty()) {
                 Toast.makeText(this, "Enter thee secret word", Toast.LENGTH_SHORT).show()
             } else {
-                val user =
-                    User(id = UUID.randomUUID().toString(), nickname = nickname, username = username, password = password)
-                    userViewModel.registerUser(user)
+                val user = User(
+                    id = UUID.randomUUID().toString(),
+                    nickname = nickname,
+                    username = username,
+                    password = password
+                )
+                userViewModel.registerUser(user)
             }
         } catch (e: Exception) {
             Log.e("FAILURE", e.message.toString())
