@@ -7,21 +7,20 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomChatMessageAdapter(private val context: Context, private var chatList: List<String>) :
+class CustomChatMessageAdapter(private val context: Context, private var chatList: List<Message>, private var viewType: String) :
     RecyclerView.Adapter<CustomChatMessageAdapter.ChatMessageHolder>() {
-    val sender = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewChatLayout: Int): ChatMessageHolder {
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(
-            if (viewChatLayout == sender) R.layout.sender_item_container else R.layout.receiver_item_container,
+            if (checkList() == viewType) R.layout.sender_item_container else R.layout.receiver_item_container,
             parent, false
         )
         return ChatMessageHolder(view)
     }
     override fun onBindViewHolder(holder: ChatMessageHolder, position: Int) {
         val chatMessageText = chatList[position]
-        holder.chatTextTextView.text = chatMessageText
+        holder.chatTextTextView.text = chatMessageText.message
     }
 
     override fun getItemCount(): Int {
@@ -30,6 +29,15 @@ class CustomChatMessageAdapter(private val context: Context, private var chatLis
 
     override fun getItemViewType(position: Int): Int {
         return position
+    }
+
+    fun checkList() : String {
+        return if (chatList.isNotEmpty()) {
+            println("INNUTI CHECKLIST" + chatList[0].userSender)
+            chatList[0].userSender
+        } else {
+            ""
+        }
     }
 
     inner class ChatMessageHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

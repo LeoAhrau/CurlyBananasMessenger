@@ -26,7 +26,7 @@ class ChatInterfaceFragment : Fragment() {
     private lateinit var contactName: TextView
     private lateinit var messageViewModel: MessageViewModel
     private var idList: List<String>? = listOf()
-    private var textOfMessages: MutableList<String>? = mutableListOf()
+    private var textOfMessages: MutableList<Message>? = mutableListOf()
     lateinit var receiver: String
     lateinit var sender: String
 
@@ -46,9 +46,13 @@ class ChatInterfaceFragment : Fragment() {
             idList = ids
         }
         messageViewModel.getEveryMessage().observe(requireActivity()) { messages ->
+            textOfMessages = messages.map { message ->
+                message
 
+            }.toMutableList()
 
-            adapter = CustomChatMessageAdapter(requireContext(), textOfMessages!!)
+            adapter = CustomChatMessageAdapter(requireContext(), textOfMessages!!, sender)
+            println("sender is = ${sender}")
             chatList.adapter = adapter
             chatList.layoutManager = LinearLayoutManager(requireContext())
 
@@ -74,14 +78,13 @@ class ChatInterfaceFragment : Fragment() {
             println("sender = ${sender}")
             println("receiver = ${receiver}")
 
-
             Log.i("Success", "Successfully changed textview name")
         } catch (e: Exception) {
             Log.e("Error", "Failed to change name", e)
         }
 
         sendButton.setOnClickListener {
-          addMessage()
+            addMessage()
         }
     }
 
@@ -102,6 +105,10 @@ class ChatInterfaceFragment : Fragment() {
                         val receiver = document.getString(KEY_RECEIVER) as String
 
                         val message = Message(id, text, sender, receiver)
+
+                        println("All documents = ${message.userSender}")
+
+
 
                         if (idList?.contains(document.id) == false) {
                             messageViewModel.insert(message)
