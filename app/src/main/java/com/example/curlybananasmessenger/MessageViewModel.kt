@@ -16,8 +16,8 @@ class MessageViewModel(application: Application) : AndroidViewModel(application)
 
     val KEY_ID = "id"
     val KEY_TEXT = "message"
-//    val KEY_SENDER = "user_sender"
-//    val KEY_RECEIVER = "user_receiver"
+    val KEY_SENDER = "user_sender"
+    val KEY_RECEIVER = "user_receiver"
 
     init {
         val messageDao = AppDatabase.getDatabase(application).messageDao()
@@ -38,8 +38,8 @@ class MessageViewModel(application: Application) : AndroidViewModel(application)
         val dataToStore = HashMap<String, Any>()
         dataToStore[KEY_ID] = message.id as Any
         dataToStore[KEY_TEXT] = message.message as Any
-//        dataToStore[KEY_SENDER] = message.userSender as Any
-//        dataToStore[KEY_RECEIVER] = message.userReceiver as Any
+        dataToStore[KEY_SENDER] = message.userSender as Any
+        dataToStore[KEY_RECEIVER] = message.userReceiver as Any
 
         FirebaseFirestore
             .getInstance()

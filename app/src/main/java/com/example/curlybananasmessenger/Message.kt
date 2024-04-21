@@ -11,10 +11,10 @@ data class Message(
     @PrimaryKey() val id: String = "",
     @ColumnInfo(name = "text")
     val message: String = "",
-//    @ColumnInfo(name = "user_sender")
-//    val userSender: String = "",
-//    @ColumnInfo(name = "user_receiver")
-//    val userReceiver: String = ""
+    @ColumnInfo(name = "user_sender")
+    val userSender: String = "",
+    @ColumnInfo(name = "user_receiver")
+    val userReceiver: String = ""
 )
 
 

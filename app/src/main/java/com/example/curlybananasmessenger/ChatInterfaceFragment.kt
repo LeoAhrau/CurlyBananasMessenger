@@ -27,11 +27,13 @@ class ChatInterfaceFragment : Fragment() {
     private lateinit var messageViewModel: MessageViewModel
     private var idList: List<String>? = listOf()
     private var textOfMessages: MutableList<String>? = mutableListOf()
+    lateinit var receiver: String
+    lateinit var sender: String
 
     private val KEY_ID = "id"
     private val KEY_TEXT = "message"
-//    val KEY_SENDER = "user_sender"
-//    val KEY_RECEIVER = "user_receiver"
+    val KEY_SENDER = "user_sender"
+    val KEY_RECEIVER = "user_receiver"
 
 
     override fun onCreateView(
@@ -69,6 +71,12 @@ class ChatInterfaceFragment : Fragment() {
             val contactName = arguments?.getString("contactName")
             binding.contactName.text = contactName
 
+            sender = arguments?.getString("contactSender").toString()
+            receiver = arguments?.getString("contactReceiver").toString()
+            println("sender = ${sender}")
+            println("receiver = ${receiver}")
+
+
             Log.i("Success", "Successfully changed textview name")
         } catch (e: Exception) {
             Log.e("Error", "Failed to change name", e)
@@ -92,7 +100,10 @@ class ChatInterfaceFragment : Fragment() {
                     for (document in value) {
                         val id = document.getString(KEY_ID) as String
                         val text = document.getString(KEY_TEXT) as String
-                        val message = Message(id, text)
+                        val sender = document.getString(KEY_SENDER) as String
+                        val receiver = document.getString(KEY_RECEIVER) as String
+
+                        val message = Message(id, text, sender, receiver)
 
                         if (idList?.contains(document.id) == false) {
                             messageViewModel.insert(message)
@@ -106,10 +117,11 @@ class ChatInterfaceFragment : Fragment() {
         try {
             val text = messageField.text.toString()
             val message =
-                Message(id = UUID.randomUUID().toString(), message = text)
+                Message(id = UUID.randomUUID().toString(), message = text, sender, receiver)
             if (text.isNotEmpty()) {
                 messageViewModel.addToFireStore(message)
                 messageField.text.clear()
+                println("message = ${message}")
             }
         } catch (e: java.lang.Exception) {
             println(e.stackTrace)

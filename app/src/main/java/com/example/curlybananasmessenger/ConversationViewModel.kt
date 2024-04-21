@@ -21,8 +21,8 @@ class ConversationViewModel(application: Application) : AndroidViewModel(applica
         repository.addConversation(conversation)
     }
 
-    fun getAllConversations(): LiveData<List<Conversation>> {
+    fun getEveryConversation(): LiveData<List<Conversation>> {
         return repository.allConversations
     }
-    
+
 }
