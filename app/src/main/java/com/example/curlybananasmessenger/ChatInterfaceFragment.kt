@@ -33,7 +33,6 @@ class ChatInterfaceFragment : Fragment() {
 //    val KEY_SENDER = "user_sender"
 //    val KEY_RECEIVER = "user_receiver"
 
-    private val chatItemList = mutableListOf<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +47,7 @@ class ChatInterfaceFragment : Fragment() {
             textOfMessages = messages.map { message ->
                 message.message
             }.toMutableList()
-            
+
             adapter = CustomChatMessageAdapter(requireContext(), textOfMessages!!)
             chatList.adapter = adapter
             chatList.layoutManager = LinearLayoutManager(requireContext())
