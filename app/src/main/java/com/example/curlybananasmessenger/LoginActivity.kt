@@ -59,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseAuth.signInWithEmailAndPassword(username,password)
             .addOnSuccessListener {
-                val intent = Intent(this, ProfileActivity::class.java)
+                val intent = Intent(this, ContactActivity::class.java)
                 startActivity(intent)
                 finish()
             }.addOnFailureListener { error ->
