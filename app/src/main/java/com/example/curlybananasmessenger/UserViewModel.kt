@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
@@ -31,6 +32,9 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
         userDetails["nickname"] = user.nickname ?: ""
         userDetails["username"] = user.username ?: ""
         userDetails["password"] = user.password ?: ""
+        userDetails["dateOfJoin"] = Timestamp.now()
+        userDetails["profileImage"] = user.profileImage ?: ""
+
 
         usersCollection.document(user.id ?: "").set(userDetails)
             .addOnSuccessListener { Log.i("SUCCESS", "Successfully registered user") }

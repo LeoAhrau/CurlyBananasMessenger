@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.curlybananasmessenger.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ServerValue
 import java.util.UUID
 
 
@@ -48,12 +49,20 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "Enter thee secret word", Toast.LENGTH_SHORT).show()
             } else {
 
+                val timestamp = ServerValue.TIMESTAMP
+
+                // Add date of joining to user object
+
+
                 val user = User(
                     id = UUID.randomUUID().toString(),
                     nickname = nickname,
                     username = username,
-                    password = password
+                    password = password,
+                    dateOfJoin = timestamp.toString(),
+
                 )
+                //user.dateOfJoin = timestamp.toString()
                 userViewModel.registerUser(user)
 
             }

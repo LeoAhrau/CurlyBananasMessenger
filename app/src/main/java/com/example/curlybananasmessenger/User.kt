@@ -9,5 +9,7 @@ data class User (
     @PrimaryKey() val id: String = "",
     val nickname: String?,
     val username: String?,
-    val password: String?)
+    val password: String?,
+    var dateOfJoin: String?,
+    val profileImage: String? = null)
 
