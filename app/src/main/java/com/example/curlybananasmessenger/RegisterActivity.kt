@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import java.util.UUID
 
+
 class RegisterActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityRegisterBinding
@@ -38,6 +39,7 @@ class RegisterActivity : AppCompatActivity() {
             val username = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
 
+
             if (nickname.isEmpty()) {
                 Toast.makeText(this, "Enter thy title", Toast.LENGTH_SHORT).show()
             } else if (!Patterns.EMAIL_ADDRESS.matcher(username).matches()) {
@@ -45,6 +47,7 @@ class RegisterActivity : AppCompatActivity() {
             } else if (password.isEmpty()) {
                 Toast.makeText(this, "Enter thee secret word", Toast.LENGTH_SHORT).show()
             } else {
+
                 val user = User(
                     id = UUID.randomUUID().toString(),
                     nickname = nickname,
@@ -52,6 +55,7 @@ class RegisterActivity : AppCompatActivity() {
                     password = password
                 )
                 userViewModel.registerUser(user)
+
             }
         } catch (e: Exception) {
             Log.e("FAILURE", e.message.toString())

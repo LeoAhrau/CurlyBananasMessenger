@@ -18,4 +18,10 @@
     <string name="item_logout">Logout</string>
     <string name="et_contact_email">Write contact e-mail</string>
     <string name="btn_add_contact">Add to contacts</string>
+    <string name="et_change_name">Write a new name</string>
+    <string name="btn_save_profile">Save changes</string>
+    <string name="btn_log_out">Log out</string>
+    <string name="profile_name_label">Name:  </string>
+    <string name="profile_email_label">E-mail:  </string>
+    <string name="profile_date_label">Date of join:  </string>
 </resources>
