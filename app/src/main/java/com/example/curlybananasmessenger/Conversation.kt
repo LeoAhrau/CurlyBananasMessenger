@@ -4,10 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-@Entity(tableName = "user_table")
-data class User (
+@Entity (tableName = "conversation_table")
+data class Conversation(
     @PrimaryKey() val id: String = "",
-    val nickname: String?,
-    val username: String?,
-    val password: String?)
-
+    val sender: String?,
+    val receiver: String?)

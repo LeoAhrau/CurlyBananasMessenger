@@ -2,18 +2,27 @@ package com.example.curlybananasmessenger
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 
 @Dao
 interface MessageDao {
-    @Query("SELECT * FROM message")
+    @Query("SELECT * FROM message_table")
     fun getAllMessages(): LiveData<List<Message>>
 
-    @Insert
-    fun insertMessage(message: Message)
+    @Query("SELECT id FROM message_table")
+    fun getAllMessageIds(): LiveData<List<String>>
 
-    @Query("SELECT * FROM message ORDER BY id DESC LIMIT 1")
+    @Query("SELECT user_sender FROM message_table")
+    fun getAllSenders(): LiveData<List<String>>
+
+    @Insert
+    suspend fun insertMessage(message: Message)
+    @Delete
+    suspend fun deleteMessage(message: Message)
+
+    @Query("SELECT * FROM message_table ORDER BY id DESC LIMIT 1")
     fun getLastMessage(): LiveData<Message>
 }
 

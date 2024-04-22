@@ -1,13 +1,20 @@
 package com.example.curlybananasmessenger
 
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity (tableName = "message_table")
 data class Message(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val message: String
+    @PrimaryKey() val id: String = "",
+    @ColumnInfo(name = "text")
+    val message: String = "",
+    @ColumnInfo(name = "user_sender")
+    val userSender: String = "",
+    @ColumnInfo(name = "user_receiver")
+    val userReceiver: String = ""
 )
 
 

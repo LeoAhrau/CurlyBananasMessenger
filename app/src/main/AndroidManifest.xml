@@ -19,9 +19,7 @@
             android:name=".BaseActivity"
             android:exported="false" />
         <activity android:name=".MainActivity" />
-        <activity
-            android:name=".ChatActivity"
-            android:exported="true" />
+
         <activity
             android:name=".ContactsActivity"
             android:exported="true">
