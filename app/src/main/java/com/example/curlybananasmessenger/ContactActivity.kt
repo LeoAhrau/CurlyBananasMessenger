@@ -49,8 +49,8 @@ class ContactActivity : BaseActivity() {
             addContact()
         }
 
-        binding.lvContacts.onItemLongClickListener =
-            AdapterView.OnItemLongClickListener { parent, view, position, id ->
+        binding.lvContacts.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, view, position, id ->
                 val selectedContact = parent.getItemAtPosition(position) as Contact
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("contactName", selectedContact)
@@ -59,12 +59,12 @@ class ContactActivity : BaseActivity() {
                 true
             }
 
-        //binding.lvContacts.onItemLongClickListener =
-        //            AdapterView.OnItemLongClickListener { parent, view, position, id ->
-        //                val selectedContact = parent.getItemAtPosition(position) as Contact
-        //                contactDao.deleteContact(selectedContact)
-        //                true
-        //            }
+        binding.lvContacts.onItemLongClickListener =
+                    AdapterView.OnItemLongClickListener { parent, view, position, id ->
+                        val selectedContact = parent.getItemAtPosition(position) as Contact
+                        contactDao.deleteContact(selectedContact)
+                        true
+                    }
     }
 
     private fun addContact() {
