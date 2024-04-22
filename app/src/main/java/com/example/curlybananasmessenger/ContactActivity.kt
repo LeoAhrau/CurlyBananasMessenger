@@ -7,7 +7,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import com.example.curlybananasmessenger.databinding.ActivityContactBinding
 import java.util.UUID
 
@@ -73,7 +72,7 @@ class ContactActivity : BaseActivity() {
             val contactEmail = binding.etContactEmail.text.toString()
 
             val contact = Contact(UUID.randomUUID().toString(), contactName, contactEmail)
-            contactDao.addContact(contact)
+            contactDao.addContact(this, contact)
 
             binding.etContactName.text.clear()
             binding.etContactEmail.text.clear()

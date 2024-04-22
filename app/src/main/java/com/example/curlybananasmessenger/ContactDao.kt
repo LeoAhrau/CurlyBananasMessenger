@@ -1,8 +1,11 @@
 package com.example.curlybananasmessenger
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+
 
 class ContactDao {
     val KEY_CONTACT_ID = "contact_id"
@@ -35,25 +38,43 @@ class ContactDao {
     }
 
 
-    fun addContact(contact: Contact) {
-        val dataToStore = HashMap<String, Any>()
+    fun addContact(context: Context, contact: Contact) {
+        val userEmail = contact.contactEmail
 
-        dataToStore[KEY_CONTACT_ID] = contact.contactId as Any
-        dataToStore[KEY_CONTACT_NAME] = contact.contactName as Any
-        dataToStore[KEY_CONTACT_EMAIL] = contact.contactEmail as Any
+        // Query the users collection to find the user with the given email
+        FirebaseFirestore.getInstance().collection("users")
+            .whereEqualTo("username", userEmail)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (documents.isEmpty) {
+                    // Email does not exist, show toast
+                    Log.e("ERROR", "User with email $userEmail does not exist")
+                    Toast.makeText(context, "Please enter a valid email", Toast.LENGTH_SHORT).show()
+                } else {
+                    // Email exists, get the ID of the user
+                    val userId = documents.documents[0].id
 
-        FirebaseFirestore
-            .getInstance()
-            .document("users/$currentUserUid/contacts/${contact.contactId}")
-            .set(dataToStore)
-            .addOnSuccessListener {
-                Log.i(
-                    "SUCCESS",
-                    "Added contact with name $(contact.contactID) to contacts"
-                )
+                    // Add contact with the same ID as the user to contacts collection
+                    val dataToStore = hashMapOf(
+                        "contact_id" to userId,
+                        "contact_name" to contact.contactName,
+                        "contact_email" to contact.contactEmail
+                    )
+
+                    FirebaseFirestore.getInstance()
+                        .document("users/$currentUserUid/contacts/$userId") // Use userId as document ID
+                        .set(dataToStore)
+                        .addOnSuccessListener {
+                            Log.i("SUCCESS", "Added contact with email $userEmail to contacts")
+                        }
+                        .addOnFailureListener {
+                            Log.e("FAILURE", "Failed to add contact with email $userEmail to contacts")
+                        }
+                }
             }
-            .addOnFailureListener { Log.i("FAILURE", "Failed to add contact to contacts") }
-
+            .addOnFailureListener { exception ->
+                Log.e("ERROR", "Error getting documents: ", exception)
+            }
     }
 
 

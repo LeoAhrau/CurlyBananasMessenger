@@ -8,5 +8,3 @@ data class User(
     val password: String? = null,
     var dateOfJoin: Any? = null,
     val profileImage: String? = null)
-
-
