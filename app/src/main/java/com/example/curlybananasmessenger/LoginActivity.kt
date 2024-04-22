@@ -19,7 +19,11 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-     
+        binding.buttonToRoom.setOnClickListener {
+            val intent = Intent(this, ChatActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
         binding.buttonShowContacts.setOnClickListener {
             val intent = Intent(this, ContactsActivity::class.java)
             startActivity(intent)

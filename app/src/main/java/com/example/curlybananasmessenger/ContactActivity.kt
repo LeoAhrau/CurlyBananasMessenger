@@ -6,14 +6,9 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.activity.OnBackPressedCallback
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.ViewModelProvider
 import com.example.curlybananasmessenger.databinding.ActivityContactBinding
-import com.google.firebase.auth.FirebaseAuth
 import java.util.UUID
 
 class ContactActivity : BaseActivity() {
@@ -22,26 +17,11 @@ class ContactActivity : BaseActivity() {
     lateinit var customAdapter: CustomContactsListAdapter
     lateinit var contactDao: ContactDao
     private lateinit var allContacts: ArrayList<Contact>
-    lateinit var mainView: ConstraintLayout
-    private val fragment = ChatInterfaceFragment()
-    private lateinit var conversationViewModel: ConversationViewModel
-    private var conversationList: List<Conversation>? = mutableListOf()
-    lateinit var firebaseAuth: FirebaseAuth
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityContactBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        firebaseAuth = FirebaseAuth.getInstance()
-
-        conversationViewModel = ViewModelProvider(this)[ConversationViewModel::class.java]
-        conversationViewModel.getEveryConversation().observe(this) { conversations ->
-            conversationList = conversations
-            println("conversationList = ${conversationList}")
-        }
-
-        mainView = binding.mainLayout
 
         customAdapter = CustomContactsListAdapter(this, ArrayList())
         binding.lvContacts.adapter = customAdapter
@@ -69,37 +49,15 @@ class ContactActivity : BaseActivity() {
             addContact()
         }
 
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (supportFragmentManager.backStackEntryCount > 0) {
-                    supportFragmentManager.popBackStack()
-                    mainView.visibility = View.VISIBLE
-                } else {
-                    finish()
-                }
-            }
-        })
-
-
         binding.lvContacts.onItemLongClickListener =
             AdapterView.OnItemLongClickListener { parent, view, position, id ->
                 val selectedContact = parent.getItemAtPosition(position) as Contact
-                mainView.visibility = View.GONE
-                val fragmentTransaction = supportFragmentManager.beginTransaction()
-                fragmentTransaction.add(binding.chatInterfaceContainer.id, fragment)
-                fragmentTransaction.addToBackStack(null)
-                fragmentTransaction.commit()
-
-                val bundle = Bundle()
-                bundle.putString("contactName", selectedContact.contactName)
-                bundle.putString("contactReceiver", selectedContact.contactEmail)
-                bundle.putString("contactSender", firebaseAuth.currentUser?.email)
-                fragment.arguments = bundle
-
-
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("contactName", selectedContact)
+                startActivity(intent)
+                finish()
                 true
             }
-
 
         //binding.lvContacts.onItemLongClickListener =
         //            AdapterView.OnItemLongClickListener { parent, view, position, id ->
@@ -116,9 +74,6 @@ class ContactActivity : BaseActivity() {
 
             val contact = Contact(UUID.randomUUID().toString(), contactName, contactEmail)
             contactDao.addContact(contact)
-            val thisUser = firebaseAuth.currentUser?.email
-            val conversation = Conversation(UUID.randomUUID().toString(), thisUser, contactEmail)
-            conversationViewModel.addConversation(conversation)
 
             binding.etContactName.text.clear()
             binding.etContactEmail.text.clear()
