@@ -13,6 +13,7 @@ class MessageViewModel(application: Application) : AndroidViewModel(application)
     private val repository: MessageRepository
     val allMessages: LiveData<List<Message>>
     private val allMessageIds: LiveData<List<String>>
+    private val allSenders: LiveData<List<String>>
 
     val KEY_ID = "id"
     val KEY_TEXT = "message"
@@ -24,6 +25,7 @@ class MessageViewModel(application: Application) : AndroidViewModel(application)
         repository = MessageRepository(messageDao)
         allMessages = repository.allMessages
         allMessageIds = repository.allMessageIds
+        allSenders = repository.allSenders
     }
 
     fun insert(message: Message) = viewModelScope.launch {
@@ -51,6 +53,9 @@ class MessageViewModel(application: Application) : AndroidViewModel(application)
 
     fun getEveryMessage(): LiveData<List<Message>> {
         return repository.allMessages
+    }
+    fun getEverySender(): LiveData<List<String>> {
+        return repository.allSenders
     }
 
     fun getAllMessageIds(): LiveData<List<String>> {

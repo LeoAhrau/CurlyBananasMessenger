@@ -27,14 +27,13 @@ class ChatInterfaceFragment : Fragment() {
     private lateinit var messageViewModel: MessageViewModel
     private var idList: List<String>? = listOf()
     private var textOfMessages: MutableList<Message>? = mutableListOf()
-    lateinit var receiver: String
+    private lateinit var receiver: String
     lateinit var sender: String
 
     private val KEY_ID = "id"
     private val KEY_TEXT = "message"
     val KEY_SENDER = "user_sender"
     val KEY_RECEIVER = "user_receiver"
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +51,6 @@ class ChatInterfaceFragment : Fragment() {
             }.toMutableList()
 
             adapter = CustomChatMessageAdapter(requireContext(), textOfMessages!!, sender)
-            println("sender is = ${sender}")
             chatList.adapter = adapter
             chatList.layoutManager = LinearLayoutManager(requireContext())
 
@@ -72,11 +70,8 @@ class ChatInterfaceFragment : Fragment() {
         try {
             val contactName = arguments?.getString("contactName")
             binding.contactName.text = contactName
-
             sender = arguments?.getString("contactSender").toString()
             receiver = arguments?.getString("contactReceiver").toString()
-            println("sender = ${sender}")
-            println("receiver = ${receiver}")
 
             Log.i("Success", "Successfully changed textview name")
         } catch (e: Exception) {
@@ -106,10 +101,6 @@ class ChatInterfaceFragment : Fragment() {
 
                         val message = Message(id, text, sender, receiver)
 
-                        println("All documents = ${message.userSender}")
-
-
-
                         if (idList?.contains(document.id) == false) {
                             messageViewModel.insert(message)
                         }
@@ -126,7 +117,6 @@ class ChatInterfaceFragment : Fragment() {
             if (text.isNotEmpty()) {
                 messageViewModel.addToFireStore(message)
                 messageField.text.clear()
-                println("message = ${message}")
             }
         } catch (e: java.lang.Exception) {
             println(e.stackTrace)

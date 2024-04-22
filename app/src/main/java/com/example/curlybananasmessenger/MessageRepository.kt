@@ -8,6 +8,7 @@ class MessageRepository(private val messageDao: MessageDao) {
     val allMessages: LiveData<List<Message>> = messageDao.getAllMessages()
 
     val allMessageIds: LiveData<List<String>> = messageDao.getAllMessageIds()
+    val allSenders: LiveData<List<String>> = messageDao.getAllSenders()
 
     suspend fun insert(message: Message) {
         messageDao.insertMessage(message)

@@ -14,6 +14,9 @@ interface MessageDao {
     @Query("SELECT id FROM message_table")
     fun getAllMessageIds(): LiveData<List<String>>
 
+    @Query("SELECT user_sender FROM message_table")
+    fun getAllSenders(): LiveData<List<String>>
+
     @Insert
     suspend fun insertMessage(message: Message)
     @Delete
