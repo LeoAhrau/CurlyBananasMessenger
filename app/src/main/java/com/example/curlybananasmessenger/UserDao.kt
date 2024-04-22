@@ -1,25 +1,34 @@
 package com.example.curlybananasmessenger
 
 
-import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
 
-@Dao
-interface UserDao {
-    @Query("SELECT * FROM user_table")
-    fun getAllUsers(): LiveData<List<User>>
 
-    @Update
-    suspend fun updateUser(user: User)
 
-    @Delete
-    suspend fun deleteUser(user: User)
+import android.util.Log
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FirebaseFirestore
 
-    @Insert
-    suspend fun addUser(user: User)
+class UserDao {
+
+    private val firestoreDB = FirebaseFirestore.getInstance()
+    private val usersCollection = firestoreDB.collection("users")
+
+    fun registerUser(user: User) {
+        val userDetails = HashMap<String, Any>()
+        userDetails["id"] = user.id ?: ""
+        userDetails["nickname"] = user.nickname ?: ""
+        userDetails["username"] = user.username ?: ""
+        userDetails["password"] = user.password ?: ""
+        userDetails["dateOfJoin"] = Timestamp.now()
+        userDetails["profileImage"] = user.profileImage ?: ""
+
+        usersCollection.document(user.id ?: "").set(userDetails)
+            .addOnSuccessListener { Log.i("SUCCESS", "Successfully registered user") }
+            .addOnFailureListener { e ->
+                Log.e("FAILURE", "Failed to register user: ${e.message}")
+            }
+    }
+
 }
+
 
