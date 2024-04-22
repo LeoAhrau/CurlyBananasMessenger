@@ -23,7 +23,7 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
         binding.buttonShowContacts.setOnClickListener {
-            val intent = Intent(this, ContactsActivity::class.java)
+            val intent = Intent(this, ContactActivity::class.java) //DETTA SKA VARA UTAN S
             startActivity(intent)
             finish()
         }

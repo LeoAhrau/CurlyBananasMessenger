@@ -8,7 +8,12 @@ package com.example.curlybananasmessenger
 //import dagger.hilt.InstallIn
 //import dagger.hilt.components.SingletonComponent
 //import javax.inject.Singleton
-//
+//Kodsnutten använder Dagger-Hilt för att konfigurera och tillhandahålla kritiska databasresurser på ett
+// sätt som underlättar testning, underhåll och skalbarhet i Android-applikationer. Det centraliserar
+// skapandet av databasrelaterade objekt, minskar kopplingen mellan komponenterna och förbättrar kodens
+// hanterbarhet och renhet. Genom att definiera dessa tillhandahållanden i en separat modul kan du enkelt
+// ersätta eller ändra konfigurationer utan att påverka andra delar av applikationen.
+
 //@Module
 //@InstallIn(SingletonComponent::class)
 //object DatabaseModule {
