@@ -1,7 +1,10 @@
 package com.example.curlybananasmessenger
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Patterns
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -19,6 +22,10 @@ class LoginActivity : AppCompatActivity() {
     lateinit var binding: ActivityLoginBinding
     lateinit var firebaseAuth: FirebaseAuth
     lateinit var fbStorage: FirebaseStorage
+    private var mediaPlayer: MediaPlayer? = null
+    private var handler: Handler? = null
+    private var soundRunnable: Runnable? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,15 +97,66 @@ class LoginActivity : AppCompatActivity() {
                 ).also {
                     it.topMargin = -300 // Starta ovanför skärmen
                     it.leftMargin =
-                        (0..container.height).random() // Starta på slumpmässiga horisontella positioner
+                        (0..container.width).random() // Starta på slumpmässiga horisontella positioner
                 }
                 setImageResource(R.drawable.cute_banana_hands)
             }
             container.addView(banana)
+            playSound(R.raw.cute_character_wee)
             val anim = AnimationUtils.loadAnimation(this, R.anim.fall_down)
             anim.startOffset =
                 (0..1000).random().toLong() // Slumpmässig startfördröjning för osynkronisering
             banana.startAnimation(anim)
         }
+    }
+
+//    private fun playSound(soundResourceId: Int) {
+//        mediaPlayer = MediaPlayer.create(this, soundResourceId)
+//        mediaPlayer.start()
+//        mediaPlayer.setOnCompletionListener {
+//            // Frigör MediaPlayer-resurser när ljudet är klart
+//            it.release()
+//        }
+//    }
+//
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        if (this::mediaPlayer.isInitialized && mediaPlayer.isPlaying) {
+//            mediaPlayer.stop()
+//            mediaPlayer.release()
+//        }
+//    }
+//}
+
+    private fun playSound(soundResourceId: Int) {
+        handler = Handler(Looper.getMainLooper())
+        soundRunnable = Runnable {
+            // Release any previous MediaPlayer instance
+            mediaPlayer?.release()
+
+            mediaPlayer = MediaPlayer.create(this, soundResourceId).apply {
+                start()
+                setOnCompletionListener { mp ->
+                    mp.release()
+                }
+                setOnErrorListener { mp, what, extra ->
+                    mp.release()
+                    true
+                }
+            }
+        }
+        handler?.postDelayed(soundRunnable!!, 2000)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        soundRunnable?.let { handler?.removeCallbacks(it) } // Ta bort eventuella schemalagda åtgärder
+        mediaPlayer?.let {
+            if (it.isPlaying) {
+                it.stop()
+            }
+            it.release()
+        }
+        mediaPlayer = null
     }
 }
