@@ -6,24 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
 
-class CustomChatMessageAdapter(
-    private val context: Context,
-    private var chatList: List<Message>,
-    private val currentUser: String
-) :
+class CustomChatMessageAdapter(private val context: Context, private var chatList: MutableList<String>) :
     RecyclerView.Adapter<CustomChatMessageAdapter.ChatMessageHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewChatLayout: Int): ChatMessageHolder {
-        val layoutRes = if (chatList[viewChatLayout].userSender == currentUser) R.layout.sender_item_container else R.layout.receiver_item_container
-        val view = LayoutInflater.from(context).inflate(layoutRes, parent, false)
+        val inflater = LayoutInflater.from(context)
+        val view = inflater.inflate(
+            if (viewChatLayout % 2 == 0) R.layout.sender_item_container else R.layout.receiver_item_container,
+            parent, false
+        )
         return ChatMessageHolder(view)
     }
-
     override fun onBindViewHolder(holder: ChatMessageHolder, position: Int) {
         val chatMessageText = chatList[position]
-        holder.chatTextTextView.text = chatMessageText.message
+        holder.chatTextTextView.text = chatMessageText
     }
 
     override fun getItemCount(): Int {

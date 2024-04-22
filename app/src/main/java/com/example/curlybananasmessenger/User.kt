@@ -1,15 +1,12 @@
 package com.example.curlybananasmessenger
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 
-
-@Entity(tableName = "user_table")
-data class User (
-    @PrimaryKey() val id: String = "",
-    val nickname: String?,
-    val username: String?,
-    val password: String?,
-    var dateOfJoin: String?,
+data class User(
+    val id: String? = null,
+    val nickname: String? = null,
+    val username: String? = null,
+    val password: String? = null,
+    var dateOfJoin: Any? = null,
     val profileImage: String? = null)
+
 
