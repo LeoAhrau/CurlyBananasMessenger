@@ -5,6 +5,7 @@ package com.example.curlybananasmessenger
 
 
 import android.util.Log
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 
 class UserDao {
@@ -18,6 +19,8 @@ class UserDao {
         userDetails["nickname"] = user.nickname ?: ""
         userDetails["username"] = user.username ?: ""
         userDetails["password"] = user.password ?: ""
+        userDetails["dateOfJoin"] = Timestamp.now()
+        userDetails["profileImage"] = user.profileImage ?: ""
 
         usersCollection.document(user.id ?: "").set(userDetails)
             .addOnSuccessListener { Log.i("SUCCESS", "Successfully registered user") }
