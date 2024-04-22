@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_medium"
+    tools:context=".ProfileActivity"
+    >
+
+
+    <ImageView
+        android:id="@+id/iv_profile_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/banana"
+
+        />
+
+    <TextView
+        android:id="@+id/tv_profile_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/margin_big"
+
+        />
+
+    <TextView
+        android:id="@+id/tv_profile_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/margin_medium"
+
+        />
+
+    <TextView
+        android:id="@+id/tv_profile_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/margin_medium"
+
+
+        />
+
+    <EditText
+        android:id="@+id/et_change_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="@string/et_change_name"
+        android:layout_marginTop="@dimen/margin_big"
+
+        />
+
+    <Button
+        android:id="@+id/btn_save_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_save_profile"
+        android:backgroundTint="@color/light_brown"
+        android:textColor="@color/white"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium"
+
+        />
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/light_brown"
+        android:text="@string/btn_log_out"
+        android:textColor="@color/white"
+        android:layout_marginTop="@dimen/margin_medium"
+
+        />
+
+
+</LinearLayout>
