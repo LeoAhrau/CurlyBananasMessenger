@@ -117,6 +117,7 @@ class ProfileActivity : AppCompatActivity() {
         resultLauncher.launch(cameraIntent)
     }
 
+
     fun chooseFromGallery() {
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         resultLauncher.launch(galleryIntent)
