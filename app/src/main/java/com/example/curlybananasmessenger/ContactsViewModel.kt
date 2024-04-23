@@ -5,16 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
-class ContactsViewModel(private val repository: ContactsRepository) : ViewModel() {
-    val allContacts: LiveData<List<Contacts>> = repository.allContacts
-
-    fun insert(contact: Contacts) = viewModelScope.launch(Dispatchers.IO) {
-        repository.insert(contact)
-    }
-}
-
-
+//
+//class ContactsViewModel(private val repository: ContactsRepository) : ViewModel() {
+//    val allContacts: LiveData<List<Contacts>> = repository.allContacts
+//
+//    fun insert(contact: Contacts) = viewModelScope.launch(Dispatchers.IO) {
+//        repository.insert(contact)
+//    }
+//}
+//
+//
 
 //import androidx.lifecycle.viewModelScope
 //import kotlinx.coroutines.launch

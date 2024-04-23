@@ -9,35 +9,35 @@ import androidx.lifecycle.ViewModelProvider
 
 
 
-class ChatActivity : BaseActivity() {
-    private lateinit var messageViewModel: MessageViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat)
-
-        val messageEditText: EditText = findViewById(R.id.messageEditText)
-        val sendButton: Button = findViewById(R.id.sendButton)
-        val lastMessageTextView: TextView = findViewById(R.id.lastMessageTextView)
-
-        val dao = MessageAppDatabase.getDatabase(application).messageDao()
-        val repository = MessageRepository(dao)
-        messageViewModel = ViewModelProvider(this, ViewModelFactory(repository))[MessageViewModel::class.java]
-
-        sendButton.setOnClickListener {
-            val messageText = messageEditText.text.toString()
-            if (messageText.isNotEmpty()) {
-                val message = Message(message = messageText)
-                messageViewModel.insert(message)
-                messageEditText.setText("")
-
-                // Uppdatera TextView med det senast inskickade meddelandet
-                lastMessageTextView.text = "Senast sparad: $messageText"
-            }
-        }
-    }
-}
-
+//class ChatActivity : BaseActivity() {
+//    private lateinit var messageViewModel: MessageViewModel
+//
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        setContentView(R.layout.activity_chat)
+//
+//        val messageEditText: EditText = findViewById(R.id.messageEditText)
+//        val sendButton: Button = findViewById(R.id.sendButton)
+//        val lastMessageTextView: TextView = findViewById(R.id.lastMessageTextView)
+//
+//        val dao = MessageAppDatabase.getDatabase(application).messageDao()
+//        val repository = MessageRepository(dao)
+//        messageViewModel = ViewModelProvider(this, ViewModelFactory(repository))[MessageViewModel::class.java]
+//
+//        sendButton.setOnClickListener {
+//            val messageText = messageEditText.text.toString()
+//            if (messageText.isNotEmpty()) {
+//                val message = Message(message = messageText)
+//                messageViewModel.insert(message)
+//                messageEditText.setText("")
+//
+//                // Uppdatera TextView med det senast inskickade meddelandet
+//                lastMessageTextView.text = "Senast sparad: $messageText"
+//            }
+//        }
+//    }
+//}
+//
 
 
 //
