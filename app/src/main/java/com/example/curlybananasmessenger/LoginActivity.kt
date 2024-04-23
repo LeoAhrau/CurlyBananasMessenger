@@ -5,6 +5,7 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.util.Patterns
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -132,15 +133,25 @@ class LoginActivity : AppCompatActivity() {
         handler = Handler(Looper.getMainLooper())
         soundRunnable = Runnable {
             // Release any previous MediaPlayer instance
-            mediaPlayer?.release()
+            mediaPlayer?.release() // Släpp alla tidigare MediaPlayer-instanser om de existerar
 
-            mediaPlayer = MediaPlayer.create(this, soundResourceId).apply {
+
+            mediaPlayer = MediaPlayer.create(this, soundResourceId).apply {   // Skapa en ny MediaPlayer-instans och konfigurera den
                 start()
-                setOnCompletionListener { mp ->
+                setOnCompletionListener { mp ->  // Ställ in en lyssnare som kallas när uppspelningen är klar
+                    // Stop och frigör MediaPlayer när ljudet är klart
+                    mp.stop()
                     mp.release()
+
+                    // Nullställ referensen så att vi vet att den inte längre är initialiserad
+                    mediaPlayer = null
                 }
+
                 setOnErrorListener { mp, what, extra ->
                     mp.release()
+                    mediaPlayer = null
+                    Log.e("MediaPlayer", "Error occurred during playback")
+                    true // Indikerar att felet har hanterats
                     true
                 }
             }
