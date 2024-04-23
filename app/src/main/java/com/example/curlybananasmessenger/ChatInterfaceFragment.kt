@@ -107,31 +107,57 @@ class ChatInterfaceFragment : Fragment() {
     }
 
     fun getMessages() {
-       // var messageList = mutableListOf<String>()
 
-
-        val messagesCollectionPath = "users/$currentUserUid/contacts/$currentContactId/messages"
-
+// Skapa en instans av Firestore
         val db = FirebaseFirestore.getInstance()
 
+// Skapa en lista för att lagra meddelanden
+        val messageList = mutableListOf<ChatMessage>()
 
-        val documentReference = db.collection(messagesCollectionPath).document()
+// Ange sökvägen till användares samling
+        val usersCollectionRef = db.collection("users")
 
-        documentReference.get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    println("document = ${document}")
-                    val fieldValue = document.getString("message")
-                    println("fieldValue = ${fieldValue}")
+// Hämta dokument för varje användare
+        usersCollectionRef.get()
+            .addOnSuccessListener { usersSnapshot ->
+                for (userDocument in usersSnapshot.documents) {
+                    // Hämta användarens kontakter
+                    val contactsCollectionRef = userDocument.reference.collection("contacts")
 
-                    // Använd fieldValue här
-                    println("Värdet av ditt fält är: $fieldValue")
-                } else {
-                    println("Dokumentet finns inte")
+                    contactsCollectionRef.get()
+                        .addOnSuccessListener { contactsSnapshot ->
+                            for (contactDocument in contactsSnapshot.documents) {
+                                // Hämta meddelandena för varje kontakt
+                                val messagesCollectionRef = contactDocument.reference.collection("messages")
+
+                                messagesCollectionRef.get()
+                                    .addOnSuccessListener { messagesSnapshot ->
+                                        for (messageDocument in messagesSnapshot.documents) {
+                                            // Konvertera Firestore-dokument till ChatMessage-objekt
+                                            val messageContent = messageDocument.getString("message") ?: ""
+                                            val senderId = messageDocument.getString("senderId") ?: ""
+
+                                            val chatMessage = ChatMessage(senderId, messageContent)
+
+                                            // Lägg till meddelandet i listan
+                                            messageList.add(chatMessage)
+                                        }
+                                    }
+                                    .addOnFailureListener { exception ->
+                                        println("Misslyckades med att hämta meddelanden: $exception")
+                                    }
+                            }
+                        }
+                        .addOnFailureListener { exception ->
+                            println("Misslyckades med att hämta kontakter: $exception")
+                        }
                 }
             }
             .addOnFailureListener { exception ->
-                println("Misslyckades med att hämta dokument: $exception")
+                println("Misslyckades med att hämta användare: $exception")
             }
+
+        println(messageList)
+
     }
 }
