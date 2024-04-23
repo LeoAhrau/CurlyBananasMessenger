@@ -1,5 +1,6 @@
 package com.example.curlybananasmessenger
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
@@ -24,6 +25,9 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.btnBack.setOnClickListener {
+            navigateBackToLogin()
+        }
         binding.btnRegister.setOnClickListener {
 
             registerUser()
@@ -72,5 +76,13 @@ class RegisterActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.e("FAILURE", e.message.toString())
         }
+    }
+    private fun navigateBackToLogin() {
+        // Creating intent to navigate back to LoginActivity
+        val intent = Intent(this, LoginActivity::class.java)
+        // Optionally add flags to clear task or other navigation flags if needed
+         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
+        finish()  // Call finish to destroy this activity and return to LoginActivity
     }
 }
