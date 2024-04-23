@@ -8,46 +8,46 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-
-class ContactsActivity : AppCompatActivity() {
-    private val viewModel: ContactsViewModel by viewModels { ContactsViewModelFactory(ContactsRepository(ContactsDatabase.getDatabase(this).contactsDao())) }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_contacts)
-
-        val editTextName = findViewById<EditText>(R.id.editTextName)
-        val editTextEmail = findViewById<EditText>(R.id.editTextEmail)
-        val buttonAddContact = findViewById<Button>(R.id.buttonAddContact)
-        val textViewContacts = findViewById<TextView>(R.id.textViewContacts)
-
-        // Observing the LiveData from the ViewModel to update UI
-        viewModel.allContacts.observe(this, Observer { contacts ->
-            // Display each contact in the TextView
-            textViewContacts.text = contacts.joinToString("\n") { contact ->
-                "${contact.name} - ${contact.email}"
-            }
-        })
-
-        // Handling button click event
-        buttonAddContact.setOnClickListener {
-            val name = editTextName.text.toString().trim()
-            val email = editTextEmail.text.toString().trim()
-
-            if (name.isNotEmpty() && email.isNotEmpty()) {
-                // Insert new contact into the ViewModel
-                viewModel.insert(Contacts(name = name, email = email))
-
-                // Clear the input fields after insertion
-                editTextName.text.clear()
-                editTextEmail.text.clear()
-            } else {
-                // Show an error or toast message if fields are empty
-                Toast.makeText(this, "Both fields are required", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-}
+//
+//class ContactsActivity : AppCompatActivity() {
+//    private val viewModel: ContactsViewModel by viewModels { ContactsViewModelFactory(ContactsRepository(ContactsDatabase.getDatabase(this).contactsDao())) }
+//
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        setContentView(R.layout.activity_contacts)
+//
+//        val editTextName = findViewById<EditText>(R.id.editTextName)
+//        val editTextEmail = findViewById<EditText>(R.id.editTextEmail)
+//        val buttonAddContact = findViewById<Button>(R.id.buttonAddContact)
+//        val textViewContacts = findViewById<TextView>(R.id.textViewContacts)
+//
+//        // Observing the LiveData from the ViewModel to update UI
+//        viewModel.allContacts.observe(this, Observer { contacts ->
+//            // Display each contact in the TextView
+//            textViewContacts.text = contacts.joinToString("\n") { contact ->
+//                "${contact.name} - ${contact.email}"
+//            }
+//        })
+//
+//        // Handling button click event
+//        buttonAddContact.setOnClickListener {
+//            val name = editTextName.text.toString().trim()
+//            val email = editTextEmail.text.toString().trim()
+//
+//            if (name.isNotEmpty() && email.isNotEmpty()) {
+//                // Insert new contact into the ViewModel
+//                viewModel.insert(Contacts(name = name, email = email))
+//
+//                // Clear the input fields after insertion
+//                editTextName.text.clear()
+//                editTextEmail.text.clear()
+//            } else {
+//                // Show an error or toast message if fields are empty
+//                Toast.makeText(this, "Both fields are required", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//    }
+//}
 
 //        viewModel.allContacts.observe(this, Observer { contacts ->
 //            textViewContacts.text = contacts.joinToString("\n") { contact ->

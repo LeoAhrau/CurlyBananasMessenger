@@ -34,16 +34,16 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         addFallingBananas()
 
-        binding.buttonToRoom.setOnClickListener {
-            val intent = Intent(this, ChatActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-        binding.buttonShowContacts.setOnClickListener {
-            val intent = Intent(this, ContactsActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+//        binding.buttonToRoom.setOnClickListener {
+//            val intent = Intent(this, ChatActivity::class.java)
+//            startActivity(intent)
+//            finish()
+//        }
+//        binding.buttonShowContacts.setOnClickListener {
+//            val intent = Intent(this, ContactsActivity::class.java)
+//            startActivity(intent)
+//            finish()
+//        }
         binding.btnRegister.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
