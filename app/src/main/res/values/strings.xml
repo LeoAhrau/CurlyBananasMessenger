@@ -24,4 +24,5 @@
     <string name="profile_name_label">Name:  </string>
     <string name="profile_email_label">E-mail:  </string>
     <string name="profile_date_label">Date of join:  </string>
+    <string name="back_button">Back  </string>
 </resources>
