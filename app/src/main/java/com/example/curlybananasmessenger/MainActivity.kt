@@ -13,7 +13,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setContentView(R.layout.activity_main)
+//        setContentView(R.layout.activity_chat)
+//
+//      //   Starta ChatActivity direkt
+//        val intent = Intent(this, ChatActivity::class.java)
+//                startActivity(intent)
+//        //  Avsluta MainActivity så att den inte är aktiv i backstack
+//        finish()
 
 
         // ------------------- Testing---------------------

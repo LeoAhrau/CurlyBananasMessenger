@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.curlybananasmessenger.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.coroutines.flow.emptyFlow
-import java.util.UUID
+import com.google.firebase.database.ServerValue
+
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -38,6 +38,7 @@ class RegisterActivity : AppCompatActivity() {
             val username = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
 
+
             if (nickname.isEmpty()) {
                 Toast.makeText(this, "Enter thy title", Toast.LENGTH_SHORT).show()
             } else if (!Patterns.EMAIL_ADDRESS.matcher(username).matches()) {
@@ -51,10 +52,16 @@ class RegisterActivity : AppCompatActivity() {
                         if (user != null) {
                             val userUid = user.uid
                             val user = User(userUid, nickname, username, password)
+                            val timestamp = ServerValue.TIMESTAMP
+
+                            // Add date of joining to user object
+                            user.dateOfJoin = timestamp
                             userDao.registerUser(user)
-                            Toast.makeText(this, "Successfully registered", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Successfully registered", Toast.LENGTH_SHORT)
+                                .show()
                         } else {
-                            Toast.makeText(this, "User registration failed", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "User registration failed", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                     .addOnFailureListener { e ->

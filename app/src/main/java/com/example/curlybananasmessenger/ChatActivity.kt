@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 
 
 
-class ChatActivity : AppCompatActivity() {
+class ChatActivity : BaseActivity() {
     private lateinit var messageViewModel: MessageViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {

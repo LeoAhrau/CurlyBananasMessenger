@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="medium_corner_radius">20dp</dimen>
+    <dimen name="padding_small">10dp</dimen>
+    <dimen name="padding_medium">20dp</dimen>
+    <dimen name="font_medium">20sp</dimen>
+    <dimen name="margin_medium">20dp</dimen>
+    <dimen name="margin_big">60dp</dimen>
+</resources>

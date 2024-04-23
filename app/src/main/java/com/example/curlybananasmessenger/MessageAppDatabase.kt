@@ -5,12 +5,10 @@ import androidx.room.Room
 import androidx.room.Database
 import androidx.room.RoomDatabase
 
-
 //Detta är en annotering som markerar klassen som en Room-databas. Den definierar vilka entiteter (tabeller) databasen ska innehålla, vilken version databasen är och om schemat ska exporteras eller inte.
 @Database(entities = [Message::class], version = 1, exportSchema = false) //entities = [Message::class]: Detta specificerar att Message klassen är en entitet som ska lagras i databasen. exportSchema = false: Detta förhindrar att Room exporterar databasens schema till en JSON-fil, vilket kan vara användbart för versionkontroll
 abstract class MessageAppDatabase : RoomDatabase() {  //version = 1: Detta anger versionen av databasen, vilket är användbart för att hantera databasuppgraderingar genom migrations.
     abstract fun messageDao(): MessageDao //Detta är en abstrakt metod som deklarerar att AppDatabase ska ge tillgång till MessageDao, en DAO (Data Access Object) som hanterar databasoperationerna för Message-entiteten.
-
 
     companion object {
     // Singleton förhindrar flera instanser av databasen att öppnas samtidigt.
