@@ -63,9 +63,9 @@ class ChatInterfaceFragment : Fragment() {
         getAllMessages()
 
         // Initialize adapter and layout manager for chat list
-        adapter = CustomChatMessageAdapter(requireContext(), chatItemList)
-        chatList.adapter = adapter
-        chatList.layoutManager = LinearLayoutManager(requireContext())
+//        adapter = CustomChatMessageAdapter(requireContext(), chatItemList)
+//        chatList.adapter = adapter
+//        chatList.layoutManager = LinearLayoutManager(requireContext())
 
         // Set onClickListener for send button
         sendButton.setOnClickListener {
@@ -134,7 +134,7 @@ class ChatInterfaceFragment : Fragment() {
 
     private fun showUsers(chatMessageList: ArrayList<ChatMessage>) {
         println("chatmessages = ${chatMessageList}")
-        adapter = CustomChatMessageAdapter(requireContext(), chatMessageList)
+        adapter = CustomChatMessageAdapter(requireContext(), chatMessageList, currentUserUid)
         chatList.adapter = adapter
         chatList.layoutManager = LinearLayoutManager(requireContext())
 
