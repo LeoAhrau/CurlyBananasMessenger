@@ -60,7 +60,7 @@ class ChatInterfaceFragment : Fragment() {
         println("a = ${a}")
         println("b = ${b}")
 
-        getMessages()
+        getAllMessages()
 
         // Initialize adapter and layout manager for chat list
         adapter = CustomChatMessageAdapter(requireContext(), chatItemList)
@@ -106,58 +106,39 @@ class ChatInterfaceFragment : Fragment() {
         }
     }
 
-    fun getMessages() {
 
-// Skapa en instans av Firestore
-        val db = FirebaseFirestore.getInstance()
+        fun getAllMessages() {
+            val chatList = ArrayList<ChatMessage>()
+            val messagesCollectionPath = "users/$currentUserUid/contacts/$currentContactId/messages"
 
-// Skapa en lista för att lagra meddelanden
-        val messageList = mutableListOf<ChatMessage>()
+            FirebaseFirestore
+                .getInstance()
+                .collection(messagesCollectionPath)
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
 
-// Ange sökvägen till användares samling
-        val usersCollectionRef = db.collection("users")
+                        val text = document.getString("message")
+                        val sender = document.getString("senderId")
 
-// Hämta dokument för varje användare
-        usersCollectionRef.get()
-            .addOnSuccessListener { usersSnapshot ->
-                for (userDocument in usersSnapshot.documents) {
-                    // Hämta användarens kontakter
-                    val contactsCollectionRef = userDocument.reference.collection("contacts")
 
-                    contactsCollectionRef.get()
-                        .addOnSuccessListener { contactsSnapshot ->
-                            for (contactDocument in contactsSnapshot.documents) {
-                                // Hämta meddelandena för varje kontakt
-                                val messagesCollectionRef = contactDocument.reference.collection("messages")
+                        val chatMessage = ChatMessage(text, sender)
+                        chatList.add(chatMessage)
+                    }
 
-                                messagesCollectionRef.get()
-                                    .addOnSuccessListener { messagesSnapshot ->
-                                        for (messageDocument in messagesSnapshot.documents) {
-                                            // Konvertera Firestore-dokument till ChatMessage-objekt
-                                            val messageContent = messageDocument.getString("message") ?: ""
-                                            val senderId = messageDocument.getString("senderId") ?: ""
-
-                                            val chatMessage = ChatMessage(senderId, messageContent)
-
-                                            // Lägg till meddelandet i listan
-                                            messageList.add(chatMessage)
-                                        }
-                                    }
-                                    .addOnFailureListener { exception ->
-                                        println("Misslyckades med att hämta meddelanden: $exception")
-                                    }
-                            }
-                        }
-                        .addOnFailureListener { exception ->
-                            println("Misslyckades med att hämta kontakter: $exception")
-                        }
-                }
-            }
-            .addOnFailureListener { exception ->
-                println("Misslyckades med att hämta användare: $exception")
-            }
-
-        println(messageList)
+                    Log.i("SUCCESS", "Successfully fetched all users")
+                    showUsers(chatList)
+                }.addOnFailureListener { Log.e("ERROR", "Error fetching users") }
 
     }
+
+    private fun showUsers(chatMessageList: ArrayList<ChatMessage>) {
+        println("chatmessages = ${chatMessageList}")
+        adapter = CustomChatMessageAdapter(requireContext(), chatMessageList)
+        chatList.adapter = adapter
+        chatList.layoutManager = LinearLayoutManager(requireContext())
+
+    }
+
+
 }
