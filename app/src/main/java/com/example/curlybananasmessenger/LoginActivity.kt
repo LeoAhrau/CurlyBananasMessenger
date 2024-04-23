@@ -1,5 +1,7 @@
 package com.example.curlybananasmessenger
 
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -11,6 +13,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -33,6 +36,14 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         addFallingBananas()
+
+        val textView = findViewById<TextView>(R.id.tv_title)
+        val shadowAnim = ObjectAnimator.ofFloat(textView, "translationX", 0f, 10f).apply {
+            duration = 1000
+            repeatMode = ValueAnimator.REVERSE
+            repeatCount = ValueAnimator.INFINITE
+        }
+        shadowAnim.start()
 
 //        binding.buttonToRoom.setOnClickListener {
 //            val intent = Intent(this, ChatActivity::class.java)
