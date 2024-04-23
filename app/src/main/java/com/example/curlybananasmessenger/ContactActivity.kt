@@ -7,7 +7,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import com.example.curlybananasmessenger.databinding.ActivityContactBinding
 import java.util.UUID
 
@@ -23,6 +22,7 @@ class ContactActivity : BaseActivity() {
         binding = ActivityContactBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Initialize custom adapter for ListView
         customAdapter = CustomContactsListAdapter(this, ArrayList())
         binding.lvContacts.adapter = customAdapter
 
@@ -30,7 +30,8 @@ class ContactActivity : BaseActivity() {
 
         allContacts = ArrayList()
 
-        binding.edSearchContact.addTextChangedListener(object : TextWatcher{
+        // TextWatcher for filtering contacts as user types in search field
+        binding.edSearchContact.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // No implementation needed
             }
@@ -49,8 +50,9 @@ class ContactActivity : BaseActivity() {
             addContact()
         }
 
-        binding.lvContacts.onItemLongClickListener =
-            AdapterView.OnItemLongClickListener { parent, view, position, id ->
+        // Item click listener to open chat activity when a contact is clicked
+        binding.lvContacts.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, view, position, id ->
                 val selectedContact = parent.getItemAtPosition(position) as Contact
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("contactName", selectedContact)
@@ -59,12 +61,13 @@ class ContactActivity : BaseActivity() {
                 true
             }
 
-        //binding.lvContacts.onItemLongClickListener =
-        //            AdapterView.OnItemLongClickListener { parent, view, position, id ->
-        //                val selectedContact = parent.getItemAtPosition(position) as Contact
-        //                contactDao.deleteContact(selectedContact)
-        //                true
-        //            }
+        // Item long click listener to delete a contact
+        binding.lvContacts.onItemLongClickListener =
+            AdapterView.OnItemLongClickListener { parent, view, position, id ->
+                val selectedContact = parent.getItemAtPosition(position) as Contact
+                contactDao.deleteContact(selectedContact)
+                true
+            }
     }
 
     private fun addContact() {
@@ -72,8 +75,10 @@ class ContactActivity : BaseActivity() {
             val contactName = binding.etContactName.text.toString()
             val contactEmail = binding.etContactEmail.text.toString()
 
+            // Create a new contact object with UUID as contact ID
             val contact = Contact(UUID.randomUUID().toString(), contactName, contactEmail)
-            contactDao.addContact(contact)
+            // Add the contact using ContactDao
+            contactDao.addContact(this, contact)
 
             binding.etContactName.text.clear()
             binding.etContactEmail.text.clear()
@@ -83,6 +88,7 @@ class ContactActivity : BaseActivity() {
         }
     }
 
+    // Function to filter contacts based on search query
     private fun filterContacts(query: String) {
         val filteredContacts = ArrayList<Contact>()
 
@@ -94,17 +100,21 @@ class ContactActivity : BaseActivity() {
             }
         }
 
+        // Update adapter with filtered contacts
         customAdapter.clear()
         customAdapter.addAll(filteredContacts)
         customAdapter.notifyDataSetChanged()
     }
 
     fun showContacts(contactList: ArrayList<Contact>) {
+        // Sort contacts by name
         val sortedContacts = contactList.sortedWith(compareBy { it.contactName?.lowercase() })
 
+        //Update allContacts list
         allContacts.clear()
         allContacts.addAll(sortedContacts)
 
+        // Filter contacts based on current search query
         filterContacts(binding.edSearchContact.text.toString())
     }
 }
