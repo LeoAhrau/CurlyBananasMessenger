@@ -68,6 +68,12 @@ open class BaseActivity : AppCompatActivity() {
                     println("Logged out")
                     true
                 }
+
+                R.id.item_profile -> {
+                    finish()
+                    startActivity(Intent(this, ProfileActivity::class.java))
+                    true
+                }
                 else -> false
             }
         }
