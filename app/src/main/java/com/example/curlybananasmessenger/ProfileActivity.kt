@@ -76,8 +76,7 @@ class ProfileActivity : BaseActivity() {
     }
 
 
-    /* 'startActivityForResult(Intent, Int): Unit' is deprecated. But still working in Kotlin!
-        Used launcher instead
+//    'startActivityForResult(Intent, Int): Unit' is deprecated. But still working in Kotlin!
 
     private fun chooseFromGallery() {
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -111,49 +110,54 @@ class ProfileActivity : BaseActivity() {
             }
         }
     }
-     */
-
-    // Capture photo using device camera
-    private fun takePhoto() {
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        resultLauncher.launch(cameraIntent)
-    }
-
-    // Choose image from device gallery
-    fun chooseFromGallery() {
-        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        resultLauncher.launch(galleryIntent)
-    }
 
     companion object {
         private const val REQUEST_GALLERY = 1
         private const val REQUEST_CAMERA = 2
     }
 
-    // Activity Result Launcher for handling image capture and selection
-    var resultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val data: Intent? = result.data
-
-                when (result.resultCode) {
-                    REQUEST_GALLERY -> {
-                        val imageUri = data?.data
-                        binding.ivProfileImage.setImageURI(imageUri)
-                        selectedImageUri = imageUri
-                    }
-
-                    REQUEST_CAMERA -> {
-                        val imageBitmap = data?.extras?.get("data") as? Bitmap
-                        imageBitmap?.let {
-                            binding.ivProfileImage.setImageBitmap(imageBitmap)
-                            // Convert bitmap to URI
-                            selectedImageUri = bitmapToUriConverter(imageBitmap)
-                        }
-                    }
-                }
-            }
-        }
+//    Launcher instead of startActivityForeResult
+//    // Capture photo using device camera
+//    private fun takePhoto() {
+//        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//        resultLauncher.launch(cameraIntent)
+//    }
+//
+//    // Choose image from device gallery
+//    fun chooseFromGallery() {
+//        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+//        resultLauncher.launch(galleryIntent)
+//    }
+//
+//    companion object {
+//        private const val REQUEST_GALLERY = 1
+//        private const val REQUEST_CAMERA = 2
+//    }
+//
+//    // Activity Result Launcher for handling image capture and selection
+//    var resultLauncher =
+//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//            if (result.resultCode == Activity.RESULT_OK) {
+//                val data: Intent? = result.data
+//
+//                when (result.resultCode) {
+//                    REQUEST_GALLERY -> {
+//                        val imageUri = data?.data
+//                        binding.ivProfileImage.setImageURI(imageUri)
+//                        selectedImageUri = imageUri
+//                    }
+//
+//                    REQUEST_CAMERA -> {
+//                        val imageBitmap = data?.extras?.get("data") as? Bitmap
+//                        imageBitmap?.let {
+//                            binding.ivProfileImage.setImageBitmap(imageBitmap)
+//                            // Convert bitmap to URI
+//                            selectedImageUri = bitmapToUriConverter(imageBitmap)
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
     // Convert Bitmap to URI
     private fun bitmapToUriConverter(bitmap: Bitmap): Uri {
@@ -181,40 +185,46 @@ class ProfileActivity : BaseActivity() {
                         val user: User? = document.toObject(User::class.java)
 
                         if (user != null) {
-                            // Check if user has a profile image
-                            if (!user.profileImage.isNullOrEmpty()) {
-                                // Load profile image from Firestore Storage
-                                val storageRef = fbStorage.reference.child("profile_images")
-                                    .child("$currentUserUid.jpg")
-                                storageRef.downloadUrl.addOnSuccessListener { uri ->
-                                    // Load image from URL into ImageView
-                                    thread {
-                                        try {
-                                            val url = URL(uri.toString())
-                                            val connection = url.openConnection()
-                                            connection.doInput = true
-                                            connection.connect()
-                                            val input = connection.getInputStream()
-                                            val bitmap = BitmapFactory.decodeStream(input)
+                            // Save the image to Firebase Storage
+                            selectedImageUri?.let { imageUri ->
+                                val imageRef =
+                                    fbStorage.reference.child("profile_images").child("$currentUserUid.jpg")
+                                imageRef.putFile(imageUri)
+                                    .addOnSuccessListener { taskSnapshot ->
+                                        // Get the download URL from the task snapshot
+                                        imageRef.downloadUrl.addOnSuccessListener { uri ->
+                                            val imageUrl = uri.toString()
 
-                                            runOnUiThread {
-                                                binding.ivProfileImage.setImageBitmap(bitmap)
-                                            }
-                                        } catch (e: Exception) {
-                                            Log.e(
-                                                "ProfileActivity",
-                                                "Failed to load profile image: ${e.message}",
-                                                e
-                                            )
+                                            // Update the user document with the image URL
+                                            currentUserDocRef.update("profileImage", imageUrl)
+                                                .addOnSuccessListener {
+                                                    Log.d("ProfileActivity", "Image uploaded and URL saved successfully")
+
+                                                    // Now you can also update the UI or perform any other necessary actions
+                                                }
+                                                .addOnFailureListener { e ->
+                                                    Log.e("ProfileActivity", "Failed to update image URL: ${e.message}", e)
+                                                }
                                         }
                                     }
-                                }.addOnFailureListener { e ->
-                                    Log.e(
-                                        "ProfileActivity",
-                                        "Failed to load profile image: ${e.message}",
-                                        e
-                                    )
-                                }
+                                    .addOnFailureListener { e ->
+                                        Log.e("ProfileActivity", "Failed to upload image: ${e.message}", e)
+                                    }
+                            }
+
+                            // Check if user has entered a new nickname and update it
+                            val newNickname = binding.etChangeName.text.toString()
+                            if (newNickname.isNotEmpty()) {
+                                currentUserDocRef.update("nickname", newNickname)
+                                    .addOnSuccessListener {
+                                        binding.tvProfileName.text =
+                                            getString(R.string.profile_name_label) + " " + newNickname
+                                        binding.etChangeName.text.clear()
+                                        Log.d("ProfileActivity", "Nickname updated successfully")
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.e("ProfileActivity", "Failed to update nickname: ${e.message}", e)
+                                    }
                             }
                         } else {
                             Log.e("ProfileActivity", "User data is null")
@@ -226,22 +236,6 @@ class ProfileActivity : BaseActivity() {
                 .addOnFailureListener { e ->
                     Log.e("ProfileActivity", "Failed to retrieve user data: ${e.message}", e)
                 }
-
-            // Update user's nickname in Firestore
-            val newNickname = binding.etChangeName.text.toString()
-            if (newNickname.isNotEmpty()) {
-                currentUserDocRef.update("nickname", newNickname)
-                    .addOnSuccessListener {
-                        binding.tvProfileName.text =
-                            getString(R.string.profile_name_label) + " " + newNickname
-                        binding.etChangeName.text.clear()
-                        Log.d("ProfileActivity", "Nickname updated successfully")
-                    }
-                    .addOnFailureListener { e ->
-                        Log.e("ProfileActivity", "Failed to update nickname: ${e.message}", e)
-                    }
-            }
-
         } else {
             Log.e("ProfileActivity", "Current user UID is empty")
         }
