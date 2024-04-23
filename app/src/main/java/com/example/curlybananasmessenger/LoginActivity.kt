@@ -96,7 +96,7 @@ class LoginActivity : AppCompatActivity() {
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 ).also {
-                    it.topMargin = -300 // Starta ovanför skärmen
+                    it.topMargin = -600 // Starta ovanför skärmen
                     it.leftMargin =
                         (0..container.width).random() // Starta på slumpmässiga horisontella positioner
                 }
@@ -111,23 +111,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-//    private fun playSound(soundResourceId: Int) {
-//        mediaPlayer = MediaPlayer.create(this, soundResourceId)
-//        mediaPlayer.start()
-//        mediaPlayer.setOnCompletionListener {
-//            // Frigör MediaPlayer-resurser när ljudet är klart
-//            it.release()
-//        }
-//    }
-//
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        if (this::mediaPlayer.isInitialized && mediaPlayer.isPlaying) {
-//            mediaPlayer.stop()
-//            mediaPlayer.release()
-//        }
-//    }
-//}
 
     private fun playSound(soundResourceId: Int) {
         handler = Handler(Looper.getMainLooper())
@@ -151,7 +134,6 @@ class LoginActivity : AppCompatActivity() {
                     mp.release()
                     mediaPlayer = null
                     Log.e("MediaPlayer", "Error occurred during playback")
-                    true // Indikerar att felet har hanterats
                     true
                 }
             }
