@@ -1,8 +1,8 @@
 package com.example.curlybananasmessenger
 
 data class ChatMessage(
-    var message: String? = null,
-    var senderId: String? = null
+    var message: String?,
+    var senderId: String?
 ) {
     constructor() : this("", "")
 }

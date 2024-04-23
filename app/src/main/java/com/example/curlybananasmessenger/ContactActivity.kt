@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.curlybananasmessenger.databinding.ActivityContactBinding
+import com.google.firebase.auth.FirebaseAuth
 import java.util.UUID
 
 class ContactActivity : BaseActivity() {
@@ -21,6 +22,7 @@ class ContactActivity : BaseActivity() {
     private lateinit var allContacts: ArrayList<Contact>
     lateinit var mainView: ConstraintLayout
     private val fragment = ChatInterfaceFragment()
+    private var firebaseAuth = FirebaseAuth.getInstance()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,6 +87,8 @@ class ContactActivity : BaseActivity() {
                     arguments = Bundle().apply {
                         putString("contactId", currentContactId)
                         putString("contactName", selectedContact.contactName)
+                        putString("currentUserId", firebaseAuth.currentUser?.uid)
+
                     }
                 }
 

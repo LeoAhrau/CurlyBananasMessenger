@@ -22,6 +22,7 @@ class ChatInterfaceFragment : Fragment() {
     private lateinit var chatList: RecyclerView
     private lateinit var adapter: CustomChatMessageAdapter
     private lateinit var contactName: TextView
+    private var firebaseAuth = FirebaseAuth.getInstance()
 
     private lateinit var currentUserUid: String
     private lateinit var currentContactId: String
@@ -53,11 +54,18 @@ class ChatInterfaceFragment : Fragment() {
 
         // Set contact name text view
         contactName.text = arguments?.getString("contactName")
+        val a = arguments?.getString("currentUserId")
+        val b = arguments?.getString("contactId")
+
+        println("a = ${a}")
+        println("b = ${b}")
+
+        getAllMessages()
 
         // Initialize adapter and layout manager for chat list
-        adapter = CustomChatMessageAdapter(requireContext(), chatItemList)
-        chatList.adapter = adapter
-        chatList.layoutManager = LinearLayoutManager(requireContext())
+//        adapter = CustomChatMessageAdapter(requireContext(), chatItemList)
+//        chatList.adapter = adapter
+//        chatList.layoutManager = LinearLayoutManager(requireContext())
 
         // Set onClickListener for send button
         sendButton.setOnClickListener {
@@ -97,4 +105,40 @@ class ChatInterfaceFragment : Fragment() {
             Log.e("ERROR", "Current contact ID is empty or null")
         }
     }
+
+
+        fun getAllMessages() {
+            val chatList = ArrayList<ChatMessage>()
+            val messagesCollectionPath = "users/$currentUserUid/contacts/$currentContactId/messages"
+
+            FirebaseFirestore
+                .getInstance()
+                .collection(messagesCollectionPath)
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+
+                        val text = document.getString("message")
+                        val sender = document.getString("senderId")
+
+
+                        val chatMessage = ChatMessage(text, sender)
+                        chatList.add(chatMessage)
+                    }
+
+                    Log.i("SUCCESS", "Successfully fetched all users")
+                    showUsers(chatList)
+                }.addOnFailureListener { Log.e("ERROR", "Error fetching users") }
+
+    }
+
+    private fun showUsers(chatMessageList: ArrayList<ChatMessage>) {
+        println("chatmessages = ${chatMessageList}")
+        adapter = CustomChatMessageAdapter(requireContext(), chatMessageList, currentUserUid)
+        chatList.adapter = adapter
+        chatList.layoutManager = LinearLayoutManager(requireContext())
+
+    }
+
+
 }
