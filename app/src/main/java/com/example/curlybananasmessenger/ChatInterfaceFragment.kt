@@ -109,30 +109,46 @@ class ChatInterfaceFragment : Fragment() {
 
         fun getAllMessages() {
             val chatList = ArrayList<ChatMessage>()
-            val messagesCollectionPath = "users/$currentUserUid/contacts/$currentContactId/messages"
+            val messagesCollectionSenderPath = "users/$currentUserUid/contacts/$currentContactId/messages"
+            val messagesCollectionReceiverPath = "users/$currentContactId/contacts/$currentUserUid/messages"
 
             FirebaseFirestore
                 .getInstance()
-                .collection(messagesCollectionPath)
+                .collection(messagesCollectionSenderPath)
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
-
                         val text = document.getString("message")
                         val sender = document.getString("senderId")
-
-
                         val chatMessage = ChatMessage(text, sender)
                         chatList.add(chatMessage)
                     }
 
-                    Log.i("SUCCESS", "Successfully fetched all users")
-                    showUsers(chatList)
-                }.addOnFailureListener { Log.e("ERROR", "Error fetching users") }
+                    Log.i("SUCCESS", "Successfully fetched all messages")
+                    showMessages(chatList)
+                }.addOnFailureListener { Log.e("ERROR", "Error fetching messages") }
+
+            FirebaseFirestore
+                .getInstance()
+                .collection(messagesCollectionReceiverPath)
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        val text = document.getString("message")
+                        val sender = document.getString("senderId")
+                        val chatMessage = ChatMessage(text, sender)
+                        chatList.add(chatMessage)
+                    }
+
+                    Log.i("SUCCESS", "Successfully fetched all messages")
+                    showMessages(chatList)
+                }.addOnFailureListener { Log.e("ERROR", "Error fetching messages") }
+
+
 
     }
 
-    private fun showUsers(chatMessageList: ArrayList<ChatMessage>) {
+    private fun showMessages(chatMessageList: ArrayList<ChatMessage>) {
         println("chatmessages = ${chatMessageList}")
         adapter = CustomChatMessageAdapter(requireContext(), chatMessageList, currentUserUid)
         chatList.adapter = adapter
