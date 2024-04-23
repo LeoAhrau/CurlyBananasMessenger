@@ -23,7 +23,7 @@ import kotlin.concurrent.thread
 import java.net.URL
 
 // Activity for managing user profile
-class ProfileActivity : AppCompatActivity() {
+class ProfileActivity : BaseActivity() {
 
     private lateinit var binding: ActivityProfileBinding
     private lateinit var firestoreDB: FirebaseFirestore
