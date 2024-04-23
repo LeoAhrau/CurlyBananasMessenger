@@ -33,6 +33,7 @@ class ChatInterfaceFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         binding = FragmentChatInterfaceBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -46,6 +47,7 @@ class ChatInterfaceFragment : Fragment() {
         // Retrieve the current contact ID from arguments
         currentContactId = arguments?.getString("contactId") ?: ""
 
+        getAllMessages()
         // Initialize views
         contactName = binding.tvContactName
         messageField = binding.etChatMessage
@@ -60,7 +62,9 @@ class ChatInterfaceFragment : Fragment() {
         println("a = ${a}")
         println("b = ${b}")
 
-        getAllMessages()
+
+
+        listenToChanges()
 
         // Initialize adapter and layout manager for chat list
 //        adapter = CustomChatMessageAdapter(requireContext(), chatItemList)
@@ -73,6 +77,7 @@ class ChatInterfaceFragment : Fragment() {
             if (messageText.isNotEmpty()) {
                 // Save message using the currentContactId
                 saveMessage(messageText, currentContactId)
+                getAllMessages()
                 messageField.text.clear()
             }
         }
@@ -154,6 +159,50 @@ class ChatInterfaceFragment : Fragment() {
         chatList.adapter = adapter
         chatList.layoutManager = LinearLayoutManager(requireContext())
 
+    }
+
+    fun listenToChanges(){
+        val messagesCollectionSenderPath = "users/$currentUserUid/contacts/$currentContactId/messages"
+        val messagesCollectionReceiverPath = "users/$currentContactId/contacts/$currentUserUid/messages"
+        FirebaseFirestore
+            .getInstance()
+            .collection(messagesCollectionSenderPath)
+            .addSnapshotListener(requireActivity()) { value, error ->
+                if (error != null) {
+                    Log.e("ERROR", "failed to listen for updates")
+                }
+                if (value != null) {
+                    val chatList = ArrayList<ChatMessage>()
+                    for (document in value) {
+                        val text = document.getString("message")
+                        val sender = document.getString("senderId")
+                        val chatMessage = ChatMessage(text, sender)
+                        chatList.add(chatMessage)
+                    }
+                    Log.i("SUCCESS", "Snapshot success")
+                    showMessages(chatList)
+                }
+            }
+//
+//        FirebaseFirestore
+//            .getInstance()
+//            .collection(messagesCollectionReceiverPath)
+//            .addSnapshotListener(requireActivity()) { value, error ->
+//                if (error != null) {
+//                    Log.e("ERROR", "failed to listen for updates")
+//                }
+//                if (value != null) {
+//                    val chatList = ArrayList<ChatMessage>()
+//                    for (document in value) {
+//                        val text = document.getString("message")
+//                        val sender = document.getString("senderId")
+//                        val chatMessage = ChatMessage(text, sender)
+//                        chatList.add(chatMessage)
+//                    }
+//                    Log.i("SUCCESS", "Snapshot success")
+//                    showMessages(chatList)
+//                }
+//            }
     }
 
 
