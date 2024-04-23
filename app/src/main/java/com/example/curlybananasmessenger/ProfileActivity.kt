@@ -22,7 +22,8 @@ import java.util.*
 import kotlin.concurrent.thread
 import java.net.URL
 
-class ProfileActivity : AppCompatActivity() {
+// Activity for managing user profile
+class ProfileActivity : BaseActivity() {
 
     private lateinit var binding: ActivityProfileBinding
     private lateinit var firestoreDB: FirebaseFirestore
@@ -46,19 +47,19 @@ class ProfileActivity : AppCompatActivity() {
             showImageOptionsDialog()
         }
 
+        // Save data changes both for name of the user and uploaded image in IV field
         binding.btnSaveProfile.setOnClickListener {
             saveProfile()
         }
 
+        // Log out button
         binding.btnLogout.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
-
     }
-
 
     private fun showImageOptionsDialog() {
         val options = arrayOf("Choose from Gallery", "Take a Photo")
@@ -112,12 +113,13 @@ class ProfileActivity : AppCompatActivity() {
     }
      */
 
+    // Capture photo using device camera
     private fun takePhoto() {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         resultLauncher.launch(cameraIntent)
     }
 
-
+    // Choose image from device gallery
     fun chooseFromGallery() {
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         resultLauncher.launch(galleryIntent)
@@ -128,6 +130,7 @@ class ProfileActivity : AppCompatActivity() {
         private const val REQUEST_CAMERA = 2
     }
 
+    // Activity Result Launcher for handling image capture and selection
     var resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -152,7 +155,7 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
 
-
+    // Convert Bitmap to URI
     private fun bitmapToUriConverter(bitmap: Bitmap): Uri {
         val bytes = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
@@ -165,9 +168,12 @@ class ProfileActivity : AppCompatActivity() {
         return Uri.parse(path)
     }
 
+    // Save changes in IV and Name
     private fun saveProfile() {
+        // Get current user's UID
         val currentUserUid = auth.currentUser?.uid ?: ""
         if (currentUserUid.isNotEmpty()) {
+            // Reference to current user's document in Firestore
             val currentUserDocRef = firestoreDB.collection("users").document(currentUserUid)
             currentUserDocRef.get()
                 .addOnSuccessListener { document ->
@@ -241,9 +247,12 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    // Retrieve user information from Firestore
     private fun getUserInfo() {
+        // Get current user's UID
         val currentUserUid = auth.currentUser?.uid ?: ""
         if (currentUserUid.isNotEmpty()) {
+            // Reference to current user's document in Firestore
             val currentUserDocRef = firestoreDB.collection("users").document(currentUserUid)
             currentUserDocRef.get()
                 .addOnSuccessListener { document ->
@@ -316,6 +325,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    // Function to format date to a human readable format
     private fun formatDate(date: Date?): String {
         return try {
             val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())

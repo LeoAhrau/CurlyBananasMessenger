@@ -4,13 +4,13 @@ package com.example.curlybananasmessenger
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
-data class Message(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val message: String
-)
-
-
+//@Entity
+//data class Message(
+//    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+//    val message: String
+//)
+//
+//
 
 
 //import androidx.room.Entity

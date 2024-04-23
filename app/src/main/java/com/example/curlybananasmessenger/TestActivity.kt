@@ -1,5 +1,6 @@
 package com.example.curlybananasmessenger
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.curlybananasmessenger.databinding.ActivityLoginBinding
@@ -15,7 +16,11 @@ class TestActivity : AppCompatActivity() {
         binding = ActivityTestBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        
+        binding.btnChat.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
 
 

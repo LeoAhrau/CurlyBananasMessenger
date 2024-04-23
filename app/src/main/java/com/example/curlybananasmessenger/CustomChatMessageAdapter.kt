@@ -6,32 +6,49 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.curlybananasmessenger.databinding.SenderItemContainerBinding
+import com.google.firebase.auth.FirebaseAuth
 
-class CustomChatMessageAdapter(private val context: Context, private var chatList: MutableList<String>) :
-    RecyclerView.Adapter<CustomChatMessageAdapter.ChatMessageHolder>() {
+class CustomChatMessageAdapter(val context: Context, var chatList: MutableList<ChatMessage>) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewChatLayout: Int): ChatMessageHolder {
+    private val ITEM_RECEIVE = 1
+    private val ITEM_SENT = 2
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(
-            if (viewChatLayout % 2 == 0) R.layout.sender_item_container else R.layout.receiver_item_container,
-            parent, false
-        )
-        return ChatMessageHolder(view)
-    }
-    override fun onBindViewHolder(holder: ChatMessageHolder, position: Int) {
-        val chatMessageText = chatList[position]
-        holder.chatTextTextView.text = chatMessageText
+        val layoutRes = if (viewType == ITEM_SENT) R.layout.sender_item_container else R.layout.receiver_item_container
+        val view = inflater.inflate(layoutRes, parent, false)
+        return when (viewType) {
+            ITEM_SENT -> SentViewHolder(view)
+            else -> ReceiveViewHolder(view)
+        }
     }
 
-    override fun getItemCount(): Int {
-        return chatList.size
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val chatMessage = chatList[position]
+        when (holder) {
+            is SentViewHolder -> holder.sentMessage.text = chatMessage.message
+            is ReceiveViewHolder -> holder.receiveMessage.text = chatMessage.message
+        }
     }
+
+    override fun getItemCount(): Int = chatList.size
 
     override fun getItemViewType(position: Int): Int {
-        return position
+        val chatMessage = chatList[position]
+        return if (FirebaseAuth.getInstance().currentUser?.uid == chatMessage.senderId) {
+            ITEM_SENT
+        } else {
+            ITEM_RECEIVE
+        }
     }
 
-    inner class ChatMessageHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val chatTextTextView: TextView = itemView.findViewById(R.id.tv_chat_container)
+    inner class SentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val sentMessage: TextView = itemView.findViewById(R.id.tv_chat_container)
+    }
+
+    inner class ReceiveViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val receiveMessage: TextView = itemView.findViewById(R.id.tv_chat_container)
     }
 }

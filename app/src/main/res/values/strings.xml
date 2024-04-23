@@ -13,7 +13,7 @@
     <string name="navigation_drawer_open">Open</string>
     <string name="item_my_profile">My Profile</string>
     <string name="item_my_conversations">My Conversations</string>
-    <string name="item_my_contacts">My Contacts</string>
+    <string name="item_my_contacts">Contacts</string>
     <string name="item_add_contact">Add Contact</string>
     <string name="item_logout">Logout</string>
     <string name="et_contact_email">Write contact e-mail</string>
@@ -24,4 +24,5 @@
     <string name="profile_name_label">Name:  </string>
     <string name="profile_email_label">E-mail:  </string>
     <string name="profile_date_label">Date of join:  </string>
+    <string name="back_button">Back  </string>
 </resources>

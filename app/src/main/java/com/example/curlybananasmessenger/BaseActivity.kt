@@ -56,16 +56,15 @@ open class BaseActivity : AppCompatActivity() {
                     true
                 }
 
-                R.id.item_add_contact -> {
-                    finish()
-                    startActivity(Intent(this, ContactActivity::class.java))
+                R.id.item_logout -> {
+                    auth.signOut()
+                    startActivity(Intent(this, LoginActivity::class.java))
                     true
                 }
 
-                R.id.item_logout -> {
-                    // TODO Change this
-                    auth.signOut()
-                    println("Logged out")
+                R.id.item_profile -> {
+                    finish()
+                    startActivity(Intent(this, ProfileActivity::class.java))
                     true
                 }
                 else -> false

@@ -1,3 +1,9 @@
 package com.example.curlybananasmessenger
 
-data class ChatMessage (val id: String?, val chatBody: String?, val fromID: String?, val toID: String?)
+data class ChatMessage(
+    var message: String? = null,
+    var senderId: String? = null
+) {
+    constructor() : this("", "")
+}
+

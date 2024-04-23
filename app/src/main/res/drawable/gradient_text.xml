@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <!-- This is gradient_text.xml located in res/drawable/ -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<item>
+    <shape>
+        <gradient
+            android:startColor="#E3410E"
+        android:endColor="#FFD700"
+        android:angle="0"
+        android:type="linear" />
+    </shape>
+</item>
+</selector>
