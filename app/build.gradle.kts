@@ -55,7 +55,7 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")// Room
     implementation("androidx.room:room-runtime:2.6.1") // Room
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")  // Kotlin Coroutines
-
+    implementation("com.google.firebase:firebase-storage")
     implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation("com.google.firebase:firebase-firestore")
