@@ -75,16 +75,26 @@ class ContactActivity : BaseActivity() {
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 val selectedContact = parent.getItemAtPosition(position) as Contact
                 mainView.visibility = View.GONE
-                val fragmentTransaction = supportFragmentManager.beginTransaction()
-                fragmentTransaction.add(binding.chatInterfaceContainer.id, fragment)
-                fragmentTransaction.addToBackStack(null)
-                fragmentTransaction.commit()
 
-                val bundle = Bundle()
-                bundle.putString("contactName", selectedContact.contactName)
-                fragment.arguments = bundle
+                // Retrieve the currentContactId for the selected contact
+                val currentContactId = selectedContact.contactId
+
+                // Create a new instance of ChatInterfaceFragment
+                val fragment = ChatInterfaceFragment().apply {
+                    // Pass the contactId as an argument to the fragment
+                    arguments = Bundle().apply {
+                        putString("contactId", currentContactId)
+                        putString("contactName", selectedContact.contactName)
+                    }
+                }
+
+                // Begin transaction to replace the fragment
+                supportFragmentManager.beginTransaction()
+                    .replace(binding.chatInterfaceContainer.id, fragment)
+                    .addToBackStack(null)
+                    .commit()
+
                 true
-
             }
 
         // Item long click listener to delete a contact
