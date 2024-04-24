@@ -1,9 +1,16 @@
 package com.example.curlybananasmessenger
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.util.Patterns
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.curlybananasmessenger.databinding.ActivityRegisterBinding
@@ -18,6 +25,9 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var firebaseAuth: FirebaseAuth
     lateinit var firebaseDB: FirebaseDatabase
     val userDao = UserDao()
+    private var mediaPlayer: MediaPlayer? = null
+    private var handler: Handler? = null
+    private var soundRunnable: Runnable? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +41,7 @@ class RegisterActivity : AppCompatActivity() {
         binding.btnRegister.setOnClickListener {
 
             registerUser()
+            animateBanana()
         }
     }
 
@@ -85,4 +96,82 @@ class RegisterActivity : AppCompatActivity() {
         startActivity(intent)
         finish()  // Call finish to destroy this activity and return to LoginActivity
     }
+
+    fun animateBanana() {
+
+        val bananaImage = findViewById<ImageView>(R.id.ivCuteBanana)
+        bananaImage.visibility = View.VISIBLE  // Gör bananen synlig innan animationen startar
+
+        val upAndAwayAnimation = AnimationUtils.loadAnimation(this, R.anim.jump_up)
+        bananaImage.startAnimation(upAndAwayAnimation)
+
+
+        upAndAwayAnimation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation) {
+                playSound()  // Play sound when the animation starts
+            }
+
+
+            override fun onAnimationEnd(animation: Animation) {
+                // Gör bananen osynlig när animationen är klar
+                bananaImage.visibility = View.INVISIBLE
+            }
+
+
+            override fun onAnimationRepeat(animation: Animation) {
+                // Kod som körs om animationen upprepas (ej nödvändigt här)
+            }
+        })
+    }
+
+
+    fun playSound() {
+        handler = Handler(Looper.getMainLooper())
+        soundRunnable = Runnable {
+            // Release any previous MediaPlayer instance
+            mediaPlayer?.release()  // Release any previous MediaPlayer instances if they exist
+
+
+            // Create a new MediaPlayer instance and configure it to play the 'cute_character_wee_two' sound
+            mediaPlayer = MediaPlayer.create(this, R.raw.cute_character_wee_two).apply {
+                start()
+                setOnCompletionListener { mp ->
+                    // Stop and release the MediaPlayer when the sound is done playing
+                    mp.stop()
+                    mp.release()
+
+
+                    // Reset the reference so we know it's no longer initialized
+                    mediaPlayer = null
+                }
+
+
+                setOnErrorListener { mp, what, extra ->
+                    // Handle errors during playback
+                    mp.release()
+                    mediaPlayer = null
+                    Log.e("MediaPlayer", "Error occurred during playback")
+                    true
+                }
+            }
+        }
+        handler?.post(soundRunnable!!)
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Ensure all scheduled actions are removed to prevent memory leaks
+        soundRunnable?.let { handler?.removeCallbacks(it) }
+        // Clean up the MediaPlayer instance
+        mediaPlayer?.let {
+            if (it.isPlaying) {
+                it.stop()
+            }
+            it.release()
+        }
+        mediaPlayer = null
+    }
 }
+
+
