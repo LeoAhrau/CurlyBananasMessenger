@@ -22,19 +22,19 @@ class MainActivity : AppCompatActivity() {
 //        finish()
 
 
-        // ------------------- Testing---------------------
-        val contactName = intent.getStringExtra("contactName")
-
-        val fragment = ChatInterfaceFragment()
-        val bundle = Bundle()
-        bundle.putString("contactName", contactName)
-        fragment.arguments = bundle
-
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(binding.frameContainerTest.id, fragment)
-        fragmentTransaction.addToBackStack(null)
-        fragmentTransaction.commit()
-        // ------------------- Testing---------------------
+//        // ------------------- Testing---------------------
+//        val contactName = intent.getStringExtra("contactName")
+//
+//        val fragment = ChatInterfaceFragment()
+//        val bundle = Bundle()
+//        bundle.putString("contactName", contactName)
+//        fragment.arguments = bundle
+//
+//        val fragmentTransaction = supportFragmentManager.beginTransaction()
+//        fragmentTransaction.replace(binding.frameContainerTest.id, fragment)
+//        fragmentTransaction.addToBackStack(null)
+//        fragmentTransaction.commit()
+//        // ------------------- Testing---------------------
 
 
     }

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,30 +15,33 @@
         android:theme="@style/Theme.CurlyBananasMessenger"
         tools:targetApi="31">
         <activity
+            android:name=".ChatInterfaceActivity"
+            android:exported="false" />
+        <activity
             android:name=".ProfileActivity"
             android:exported="false" />
         <activity
             android:name=".BaseActivity"
             android:exported="false" />
-        <activity android:name=".MainActivity" />
-<!--        <activity-->
-<!--            android:name=".ChatActivity"-->
-<!--            android:exported="true" />-->
-<!--        <activity-->
-<!--            android:name=".ContactsActivity"-->
-<!--            android:exported="true">-->
-<!--        </activity>-->
+        <activity android:name=".MainActivity" /> <!-- <activity -->
+        <!-- android:name=".ChatActivity" -->
+        <!-- android:exported="true" /> -->
+        <!-- <activity -->
+        <!-- android:name=".ContactsActivity" -->
+        <!-- android:exported="true"> -->
+        <!-- </activity> -->
         <activity
             android:name=".ContactActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".RegisterActivity"
-            android:hardwareAccelerated="true"/>
+        <activity
+            android:name=".RegisterActivity"
+            android:hardwareAccelerated="true" />
         <activity android:name=".TestActivity" />
         <activity
             android:name=".LoginActivity"
-            android:hardwareAccelerated="true"
-            android:exported="true">
+            android:exported="true"
+            android:hardwareAccelerated="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
