@@ -47,7 +47,8 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:text="@string/btn_send_text" />
+        android:text="@string/btn_send_text"
+        android:backgroundTint="@color/banana"/>
     </LinearLayout>
 
 </FrameLayout>

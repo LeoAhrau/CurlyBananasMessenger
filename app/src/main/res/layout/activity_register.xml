@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background">
 
     <ImageView
         android:id="@+id/ivCuteBanana"
@@ -26,7 +27,7 @@
         android:background="@drawable/et_border"
         android:gravity="center"
         android:hint="Nickname . . ."
-        android:textColorHint="@color/banana"
+        android:textColorHint="@color/white"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +44,7 @@
         android:background="@drawable/et_border"
         android:gravity="center"
         android:hint="Email . . ."
-        android:textColorHint="@color/banana"
+        android:textColorHint="@color/white"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +60,7 @@
         android:background="@drawable/et_border"
         android:gravity="center"
         android:hint="Password . . ."
-        android:textColorHint="@color/banana"
+        android:textColorHint="@color/white"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -72,9 +73,9 @@
         android:id="@+id/btn_register"
         android:layout_width="109dp"
         android:layout_height="60dp"
-        android:background="@drawable/btn_border"
+        android:backgroundTint="@color/banana"
         android:text="Register"
-        android:textColor="@color/banana"
+        android:textColor="@color/white"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,8 +88,9 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_margin="40dp"
-        android:textColor="@color/banana"
-        android:background="@drawable/btn_border"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/dark_banana"
+
         android:contentDescription="@string/back_button"
         android:drawablePadding="8dp"
         android:paddingStart="16dp"
