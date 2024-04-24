@@ -4,12 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rootLayout">
+    android:id="@+id/rootLayout"
+    android:background="@drawable/gradient_background">
+
     <FrameLayout
         android:id="@+id/backgroundContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="16dp"></FrameLayout>
 
     <TextView
         android:id="@+id/tv_title"
@@ -19,7 +22,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_marginTop="16dp"
-        android:textColor="@drawable/gradient_text"
+        android:textColor="@color/white"
         android:elevation="40dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +36,7 @@
         android:text="messenger"
         android:textSize="14sp"
         android:textStyle="italic"
-        android:textColor="@color/banana"
+        android:textColor="@color/white"
         android:layout_marginTop="4dp"
         app:layout_constraintTop_toBottomOf="@id/tv_title"
         app:layout_constraintStart_toStartOf="@id/tv_title"
@@ -48,7 +51,7 @@
         android:background="@drawable/et_border"
         android:gravity="center"
         android:hint="Username..."
-        android:textColorHint="@color/banana"
+        android:textColorHint="@color/white"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +62,7 @@
     <EditText
         android:id="@+id/et_password"
         android:hint="Password..."
-        android:textColorHint="@color/banana"
+        android:textColorHint="@color/white"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_margin="40dp"
@@ -77,9 +80,9 @@
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_margin="40dp"
-        android:background="@drawable/btn_border"
+        android:backgroundTint="@color/banana"
         android:text="Login"
-        android:textColor="@color/banana"
+        android:textColor="@color/white"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
