@@ -13,7 +13,6 @@ class ContactDao {
     val KEY_CONTACT_NAME = "contact_name"
     val KEY_CONTACT_EMAIL = "contact_email"
 
-    // Current user's UID
     private val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
 
     // Constructor to initialize ContactDao with activity context

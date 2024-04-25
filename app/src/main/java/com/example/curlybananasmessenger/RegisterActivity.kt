@@ -35,13 +35,11 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnBack.setOnClickListener {
-            navigateBackToLogin()
-        }
         binding.btnRegister.setOnClickListener {
 
             registerUser()
             animateBanana()
+            navigateBackToLogin()
         }
     }
 

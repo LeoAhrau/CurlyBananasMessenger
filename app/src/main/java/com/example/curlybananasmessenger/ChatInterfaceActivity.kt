@@ -18,17 +18,21 @@ class ChatInterfaceActivity : BaseActivity() {
     private lateinit var chatList: RecyclerView
     private lateinit var currentUser: String
     private lateinit var textViewContact: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatInterfaceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Initialize UI components
         textViewContact = binding.tvContactName
         chatList = binding.rvChat
 
+        // Get data passed from previous activity
         val receiverId = intent.getStringExtra("contactId") ?: ""
         val contactName = intent.getStringExtra("contactName") ?: ""
 
+        // Set contact name on UI
         textViewContact.text = contactName
 
         chatDao = ChatDao(this, receiverId)
@@ -39,13 +43,16 @@ class ChatInterfaceActivity : BaseActivity() {
         }
     }
 
+    // Method to add a message to the chat
     private fun addMessage() {
         try {
+            // Get message text from input field
             val message = binding.etChatMessage.text.toString()
             val senderId = FirebaseAuth.getInstance().currentUser?.uid.toString()
             val receiverId = intent.getStringExtra("contactId").toString()
             val timeStamp = Timestamp.now()
 
+            // Create a ChatMessage object with generated UUID
             val chatMessage =
                 ChatMessage(UUID.randomUUID().toString(), message, senderId, receiverId, timeStamp)
             chatDao.addMessage(chatMessage)
@@ -57,10 +64,13 @@ class ChatInterfaceActivity : BaseActivity() {
         }
     }
 
+    // Method to display messages in the RecyclerView
     fun showMessages(messagesList: MutableList<ChatMessage>) {
         val sender = currentUser
+        // Create and set up the adapter with the message list and sender ID
         customAdapter = CustomChatMessageAdapter(this, messagesList, sender)
         chatList.adapter = customAdapter
+        // Set layout manager for RecyclerView
         chatList.layoutManager = LinearLayoutManager(this)
     }
 }
