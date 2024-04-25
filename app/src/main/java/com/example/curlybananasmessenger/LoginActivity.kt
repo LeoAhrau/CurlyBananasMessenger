@@ -159,7 +159,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
-        handler?.postDelayed(soundRunnable!!, 2000)
+        handler?.postDelayed(soundRunnable!!, 1650)
     }
 
     override fun onDestroy() {
