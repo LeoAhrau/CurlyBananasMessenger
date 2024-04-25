@@ -76,7 +76,7 @@ class ProfileActivity : BaseActivity() {
     }
 
 
-//    'startActivityForResult(Intent, Int): Unit' is deprecated. But still working in Kotlin!
+//    'startActivityForResult(Intent, Int): Unit' is deprecated in Java. But still working in Kotlin!
 
     private fun chooseFromGallery() {
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -116,7 +116,7 @@ class ProfileActivity : BaseActivity() {
         private const val REQUEST_CAMERA = 2
     }
 
-//    Launcher instead of startActivityForeResult
+//    this launcher can be replaced to avoid using startActivityForeResult
 //    // Capture photo using device camera
 //    private fun takePhoto() {
 //        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)

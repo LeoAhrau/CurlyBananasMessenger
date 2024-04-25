@@ -35,15 +35,25 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        addFallingBananas()
 
-        val textView = findViewById<TextView>(R.id.tv_title)
-        val shadowAnim = ObjectAnimator.ofFloat(textView, "translationX", 0f, 10f).apply {
-            duration = 1000
-            repeatMode = ValueAnimator.REVERSE
-            repeatCount = ValueAnimator.INFINITE
+
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            // User is already logged in, navigate to main activity
+            navigateToMainActivity()
+            return // Return to prevent further execution of onCreate()
+        } else {
+
+            val textView = findViewById<TextView>(R.id.tv_title)
+            val shadowAnim = ObjectAnimator.ofFloat(textView, "translationX", 0f, 10f).apply {
+                duration = 1000
+                repeatMode = ValueAnimator.REVERSE
+                repeatCount = ValueAnimator.INFINITE
+            }
+            shadowAnim.start()
+            addFallingBananas()
+
         }
-        shadowAnim.start()
 
 //        binding.buttonToRoom.setOnClickListener {
 //            val intent = Intent(this, ChatActivity::class.java)
@@ -162,5 +172,11 @@ class LoginActivity : AppCompatActivity() {
             it.release()
         }
         mediaPlayer = null
+    }
+
+    private fun navigateToMainActivity() {
+        val intent = Intent(this, ContactActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
