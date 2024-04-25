@@ -1,39 +1,34 @@
 package com.example.curlybananasmessenger
 
-import android.R
 import android.os.Bundle
 import android.util.Log
-import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.curlybananasmessenger.databinding.ActivityChatInterfaceBinding
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import java.util.UUID
-
 
 class ChatInterfaceActivity : BaseActivity() {
 
     private lateinit var binding: ActivityChatInterfaceBinding
-    private lateinit var contactName: TextView
     private lateinit var chatDao: ChatDao
     private lateinit var customAdapter: CustomChatMessageAdapter
     private lateinit var chatList: RecyclerView
-    private lateinit var currentUserMail: String
+    private lateinit var currentUser: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatInterfaceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        chatList = binding.rvChat
 
         val receiverId = intent.getStringExtra("contactId") ?: ""
         // Initialize chatDao
         println("receiverId = ${receiverId}")
         chatDao = ChatDao(this, receiverId)
-        currentUserMail = FirebaseAuth.getInstance().currentUser?.uid.toString()
+        currentUser = FirebaseAuth.getInstance().currentUser?.uid.toString()
 
-        chatList = binding.rvChat
         binding.btnSendMessage.setOnClickListener {
             addMessage()
         }
@@ -44,9 +39,10 @@ class ChatInterfaceActivity : BaseActivity() {
             val message = binding.etChatMessage.text.toString()
             val senderId = FirebaseAuth.getInstance().currentUser?.uid.toString()
             val receiverId = intent.getStringExtra("contactId").toString()
+            val timeStamp = Timestamp.now()
 
             val chatMessage =
-                ChatMessage(UUID.randomUUID().toString(), message, senderId, receiverId)
+                ChatMessage(UUID.randomUUID().toString(), message, senderId, receiverId, timeStamp)
             chatDao.addMessage(chatMessage)
 
             binding.etChatMessage.text.clear()
@@ -56,8 +52,8 @@ class ChatInterfaceActivity : BaseActivity() {
         }
     }
 
-    fun showMessages(messagesList: ArrayList<ChatMessage>) {
-         val sender = currentUserMail
+    fun showMessages(messagesList: MutableList<ChatMessage>) {
+        val sender = currentUser
         customAdapter = CustomChatMessageAdapter(this, messagesList, sender)
         chatList.adapter = customAdapter
         chatList.layoutManager = LinearLayoutManager(this)
