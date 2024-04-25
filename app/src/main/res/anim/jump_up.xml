@@ -4,13 +4,13 @@
     android:interpolator="@android:anim/linear_interpolator">
 
     <translate
-        android:fromYDelta="100%p"
-        android:toYDelta="-50%p"
-        android:duration="3000"/>
+        android:fromYDelta="20%p"
+        android:toYDelta="-80%p"
+        android:duration="4000"/>
     <translate
         android:startOffset="3000"
         android:fromXDelta="0%"
-        android:toXDelta="100%p"
+        android:toXDelta="-200%p"
         android:duration="2000"
         android:interpolator="@android:anim/accelerate_interpolator"/>
 
