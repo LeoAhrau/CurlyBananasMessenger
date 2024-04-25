@@ -1,9 +1,11 @@
 package com.example.curlybananasmessenger
 
-data class ChatMessage(
-    var message: String?,
-    var senderId: String?
-) {
-    constructor() : this("", "")
-}
+import com.google.firebase.Timestamp
 
+data class ChatMessage(
+    val messageId: String?,
+    var message: String?,
+    var senderId: String?,
+    var receiverId: String?,
+    val timestamp: Timestamp?
+)

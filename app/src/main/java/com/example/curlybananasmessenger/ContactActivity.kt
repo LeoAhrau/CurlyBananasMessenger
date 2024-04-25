@@ -21,9 +21,6 @@ class ContactActivity : BaseActivity() {
     lateinit var contactDao: ContactDao
     private lateinit var allContacts: ArrayList<Contact>
     lateinit var mainView: ConstraintLayout
-    private val fragment = ChatInterfaceFragment()
-    private var firebaseAuth = FirebaseAuth.getInstance()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,34 +68,14 @@ class ContactActivity : BaseActivity() {
             }
         })
 
-
         // Item click listener to open chat activity when a contact is clicked
         binding.lvContacts.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 val selectedContact = parent.getItemAtPosition(position) as Contact
-                mainView.visibility = View.GONE
-
-                // Retrieve the currentContactId for the selected contact
-                val currentContactId = selectedContact.contactId
-
-                // Create a new instance of ChatInterfaceFragment
-                val fragment = ChatInterfaceFragment().apply {
-                    // Pass the contactId as an argument to the fragment
-                    arguments = Bundle().apply {
-                        putString("contactId", currentContactId)
-                        putString("contactName", selectedContact.contactName)
-                        putString("currentUserId", firebaseAuth.currentUser?.uid)
-
-                    }
-                }
-
-                // Begin transaction to replace the fragment
-                supportFragmentManager.beginTransaction()
-                    .replace(binding.chatInterfaceContainer.id, fragment)
-                    .addToBackStack(null)
-                    .commit()
-
-                true
+                val intent = Intent(this, ChatInterfaceActivity::class.java)
+                intent.putExtra("contactId", selectedContact.contactId)
+                intent.putExtra("contactName", selectedContact.contactName)
+                startActivity(intent)
             }
 
         // Item long click listener to delete a contact

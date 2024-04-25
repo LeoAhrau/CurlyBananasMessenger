@@ -1,3 +1,5 @@
+
+
 package com.example.curlybananasmessenger
 
 import android.content.Context
@@ -6,15 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.curlybananasmessenger.databinding.SenderItemContainerBinding
 import com.google.firebase.auth.FirebaseAuth
 
 class CustomChatMessageAdapter(
-private val context: Context,
-private var chatList: List<ChatMessage>,
-private val currentUser: String
+    private val context: Context,
+    private var chatList: List<ChatMessage>,
+    private val currentUser: String
 ) :
-RecyclerView.Adapter<CustomChatMessageAdapter.ChatMessageHolder>() {
+    RecyclerView.Adapter<CustomChatMessageAdapter.ChatMessageHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewChatLayout: Int): ChatMessageHolder {
         val layoutRes = if (chatList[viewChatLayout].senderId == currentUser) R.layout.sender_item_container else R.layout.receiver_item_container
@@ -39,3 +40,4 @@ RecyclerView.Adapter<CustomChatMessageAdapter.ChatMessageHolder>() {
         val chatTextTextView: TextView = itemView.findViewById(R.id.tv_chat_container)
     }
 }
+

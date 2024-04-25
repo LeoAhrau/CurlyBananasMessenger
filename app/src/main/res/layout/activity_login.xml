@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="-16dp"
-        tools:layout_editor_absoluteY="16dp"></FrameLayout>
+        tools:layout_editor_absoluteY="16dp" />
 
     <TextView
         android:id="@+id/tv_title"
@@ -62,6 +62,7 @@
     <EditText
         android:id="@+id/et_password"
         android:hint="Password..."
+        android:inputType="textPassword"
         android:textColorHint="@color/white"
         android:layout_width="0dp"
         android:layout_height="50dp"
