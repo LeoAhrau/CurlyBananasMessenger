@@ -21,9 +21,6 @@ class ContactActivity : BaseActivity() {
     lateinit var contactDao: ContactDao
     private lateinit var allContacts: ArrayList<Contact>
     lateinit var mainView: ConstraintLayout
-//    private val fragment = ChatInterfaceFragment()
-    private var firebaseAuth = FirebaseAuth.getInstance()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,14 +68,13 @@ class ContactActivity : BaseActivity() {
             }
         })
 
-
         // Item click listener to open chat activity when a contact is clicked
         binding.lvContacts.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 val selectedContact = parent.getItemAtPosition(position) as Contact
                 val intent = Intent(this, ChatInterfaceActivity::class.java)
                 intent.putExtra("contactId", selectedContact.contactId)
-                intent.putExtra("contactName", selectedContact.contactId)
+                intent.putExtra("contactName", selectedContact.contactName)
                 startActivity(intent)
             }
 

@@ -2,6 +2,7 @@ package com.example.curlybananasmessenger
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.curlybananasmessenger.databinding.ActivityChatInterfaceBinding
@@ -16,16 +17,20 @@ class ChatInterfaceActivity : BaseActivity() {
     private lateinit var customAdapter: CustomChatMessageAdapter
     private lateinit var chatList: RecyclerView
     private lateinit var currentUser: String
+    private lateinit var textViewContact: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatInterfaceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        textViewContact = binding.tvContactName
         chatList = binding.rvChat
 
         val receiverId = intent.getStringExtra("contactId") ?: ""
-        // Initialize chatDao
-        println("receiverId = ${receiverId}")
+        val contactName = intent.getStringExtra("contactName") ?: ""
+
+        textViewContact.text = contactName
+
         chatDao = ChatDao(this, receiverId)
         currentUser = FirebaseAuth.getInstance().currentUser?.uid.toString()
 
