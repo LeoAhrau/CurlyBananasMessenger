@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import java.util.UUID
 
 
-class ChatInterfaceActivity : AppCompatActivity() {
+class ChatInterfaceActivity : BaseActivity() {
 
     private lateinit var binding: ActivityChatInterfaceBinding
     private lateinit var contactName: TextView
