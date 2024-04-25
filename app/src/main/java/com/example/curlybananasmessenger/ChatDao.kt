@@ -5,9 +5,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.HashMap
 
-class ChatDao// Check if the message is between the current user and the specified receiver//  val messagesList = ArrayList<ChatMessage>()
+class ChatDao// Check if the message is between the current user and the specified receiver
+             //  val messagesList = ArrayList<ChatMessage>()
     (activity: ChatInterfaceActivity, receiverId: String) {
 
+    // Firebase Firestore keys
     val KEY_MESSAGE_ID = "message_id"
     val KEY_MESSAGE_CONTENT = "message_content"
     val KEY_SENDER_ID = "message_sender_id"
@@ -16,7 +18,9 @@ class ChatDao// Check if the message is between the current user and the specifi
 
 
     init {
+        // Get current user's ID
         val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
+        // Query Firestore for messages
         FirebaseFirestore
             .getInstance()
             .collection("messages")
@@ -29,6 +33,7 @@ class ChatDao// Check if the message is between the current user and the specifi
                 val messagesList = mutableListOf<ChatMessage>()
 
                 value?.forEach { document ->
+                    // Iterate through documents in the snapshot
                     val message_id = document.getString(KEY_MESSAGE_ID)
                     val message_content = document.getString(KEY_MESSAGE_CONTENT)
                     val message_sender_id = document.getString(KEY_SENDER_ID)
@@ -55,6 +60,7 @@ class ChatDao// Check if the message is between the current user and the specifi
 
     fun addMessage(chatMessage: ChatMessage) {
 
+        // Create a map to store message data
         val dataToStore = HashMap<String, Any>()
 
         dataToStore[KEY_MESSAGE_ID]=chatMessage.messageId as Any
@@ -63,6 +69,7 @@ class ChatDao// Check if the message is between the current user and the specifi
         dataToStore[KEY_RECEIVER_ID]=chatMessage.receiverId as Any
         dataToStore[KEY_TIMESTAMP]=chatMessage.timestamp as Any
 
+        // Add the message to Firestore
         FirebaseFirestore
             .getInstance()
             .document("messages/${chatMessage.messageId}")
