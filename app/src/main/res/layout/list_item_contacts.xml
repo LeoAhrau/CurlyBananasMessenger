@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="@dimen/font_medium"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             />
         <TextView
             android:id="@+id/tv_contacts_email"
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="@dimen/font_medium"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             />
 
     </LinearLayout>
