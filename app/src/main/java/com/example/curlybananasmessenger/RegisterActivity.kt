@@ -42,6 +42,9 @@ class RegisterActivity : AppCompatActivity() {
             registerUser()
             navigateBackToLogin()
         }
+        binding.btnGoBack.setOnClickListener {
+            navigateBackToLogin()
+        }
     }
 
     fun registerUser() {
