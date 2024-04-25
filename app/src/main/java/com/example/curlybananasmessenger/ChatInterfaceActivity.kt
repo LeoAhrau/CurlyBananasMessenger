@@ -4,8 +4,10 @@ import android.R
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.example.curlybananasmessenger.databinding.ActivityChatInterfaceBinding
 import com.google.firebase.auth.FirebaseAuth
 import java.util.UUID
@@ -16,6 +18,9 @@ class ChatInterfaceActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatInterfaceBinding
     private lateinit var contactName: TextView
     private lateinit var chatDao: ChatDao
+    private lateinit var customAdapter: CustomChatMessageAdapter
+    private lateinit var chatList: RecyclerView
+    private lateinit var currentUserMail: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatInterfaceBinding.inflate(layoutInflater)
@@ -26,7 +31,9 @@ class ChatInterfaceActivity : AppCompatActivity() {
         // Initialize chatDao
         println("receiverId = ${receiverId}")
         chatDao = ChatDao(this, receiverId)
+        currentUserMail = FirebaseAuth.getInstance().currentUser?.uid.toString()
 
+        chatList = binding.rvChat
         binding.btnSendMessage.setOnClickListener {
             addMessage()
         }
@@ -50,7 +57,9 @@ class ChatInterfaceActivity : AppCompatActivity() {
     }
 
     fun showMessages(messagesList: ArrayList<ChatMessage>) {
-        val chatList = ArrayAdapter(this, R.layout.simple_list_item_1, messagesList)
-        binding.lvChat.adapter = chatList
+         val sender = currentUserMail
+        customAdapter = CustomChatMessageAdapter(this, messagesList, sender)
+        chatList.adapter = customAdapter
+        chatList.layoutManager = LinearLayoutManager(this)
     }
 }
