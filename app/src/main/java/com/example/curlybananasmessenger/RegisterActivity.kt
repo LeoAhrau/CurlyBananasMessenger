@@ -40,7 +40,7 @@ class RegisterActivity : AppCompatActivity() {
         binding.btnRegister.setOnClickListener {
 
             registerUser()
-            navigateBackToLogin()
+           // navigateBackToLogin()
         }
         binding.btnGoBack.setOnClickListener {
             navigateBackToLogin()
@@ -96,7 +96,7 @@ class RegisterActivity : AppCompatActivity() {
         // Optionally add flags to clear task or other navigation flags if needed
          intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
-        finish()  // Call finish to destroy this activity and return to LoginActivity
+      //  finish()  // Call finish to destroy this activity and return to LoginActivity
     }
 
     fun animateBanana() {
