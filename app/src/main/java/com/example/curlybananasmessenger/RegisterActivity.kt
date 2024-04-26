@@ -40,7 +40,7 @@ class RegisterActivity : AppCompatActivity() {
         binding.btnRegister.setOnClickListener {
 
             registerUser()
-            navigateBackToLogin()
+           // navigateBackToLogin()
         }
         binding.btnGoBack.setOnClickListener {
             navigateBackToLogin()
