@@ -7,6 +7,14 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background">
 
+    <FrameLayout
+        android:id="@+id/backgroundContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

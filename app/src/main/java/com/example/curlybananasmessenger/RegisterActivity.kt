@@ -115,13 +115,13 @@ class RegisterActivity : AppCompatActivity() {
 
 
             override fun onAnimationEnd(animation: Animation) {
-                // Gör bananen osynlig när animationen är klar
+                // Make the banana invisible when the animation is finished
                 bananaImage.visibility = View.INVISIBLE
             }
 
 
             override fun onAnimationRepeat(animation: Animation) {
-                // Kod som körs om animationen upprepas (ej nödvändigt här)
+                // Code that runs if the animation repeats (not necessary here)
             }
         })
     }
@@ -130,7 +130,7 @@ class RegisterActivity : AppCompatActivity() {
     fun playSound() {
         handler = Handler(Looper.getMainLooper())
         soundRunnable = Runnable {
-            // Release any previous MediaPlayer instance
+
             mediaPlayer?.release()  // Release any previous MediaPlayer instances if they exist
 
 

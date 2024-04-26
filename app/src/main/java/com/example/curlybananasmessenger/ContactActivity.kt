@@ -1,17 +1,24 @@
 package com.example.curlybananasmessenger
 
-import android.R
+
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.AdapterView
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.curlybananasmessenger.databinding.ActivityContactBinding
-import com.google.firebase.auth.FirebaseAuth
 import java.util.UUID
 
 class ContactActivity : BaseActivity() {
@@ -21,6 +28,9 @@ class ContactActivity : BaseActivity() {
     lateinit var contactDao: ContactDao
     private lateinit var allContacts: ArrayList<Contact>
     lateinit var mainView: ConstraintLayout
+    private var mediaPlayer: MediaPlayer? = null
+    private var handler: Handler? = null
+    private var soundRunnable: Runnable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +65,7 @@ class ContactActivity : BaseActivity() {
 
         binding.btnAddContact.setOnClickListener {
             addContact()
+            dancingBanana()
         }
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -134,4 +145,78 @@ class ContactActivity : BaseActivity() {
         // Filter contacts based on current search query
         filterContacts(binding.edSearchContact.text.toString())
     }
+    fun playSound() {
+        handler = Handler(Looper.getMainLooper())
+        soundRunnable = Runnable {
+
+            mediaPlayer?.release()  // Release any previous MediaPlayer instances if they exist
+
+
+            // Create a new MediaPlayer instance and configure it to play the 'cute_character_wee_two' sound
+            mediaPlayer = MediaPlayer.create(this, R.raw.dudududu_tunes_girl).apply {
+                start()
+                setOnCompletionListener { mp ->
+                    // Stop and release the MediaPlayer when the sound is done playing
+                    mp.stop()
+                    mp.release()
+
+
+                    // Reset the reference so we know it's no longer initialized
+                    mediaPlayer = null
+                }
+
+
+                setOnErrorListener { mp, what, extra ->
+                    // Handle errors during playback
+                    mp.release()
+                    mediaPlayer = null
+                    Log.e("MediaPlayer", "Error occurred during playback")
+                    true
+                }
+            }
+        }
+        handler?.post(soundRunnable!!)
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Ensure all scheduled actions are removed to prevent memory leaks
+        soundRunnable?.let { handler?.removeCallbacks(it) }
+        // Clean up the MediaPlayer instance
+        mediaPlayer?.let {
+            if (it.isPlaying) {
+                it.stop()
+            }
+            it.release()
+        }
+        mediaPlayer = null
+    }
+    private fun dancingBanana() {
+        val container =
+            findViewById<FrameLayout>(R.id.backgroundContainer)
+
+        for (i in 1..1) {
+            val banana = ImageView(this).apply {
+                layoutParams = FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ).also {
+                    it.topMargin = 100
+                    it.leftMargin = 150
+
+                }
+                setImageResource(R.drawable.cute_banana_hands)
+            }
+            container.addView(banana)
+            playSound()
+            val anim = AnimationUtils.loadAnimation(this, R.anim.dancing_banana)
+            anim.startOffset = -100
+
+            banana.startAnimation(anim)
+        }
+    }
+
 }
+
+
